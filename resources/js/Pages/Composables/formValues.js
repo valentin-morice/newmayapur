@@ -11,9 +11,13 @@ export default function useForm() {
         state: '',
         postalcode: '',
         customerId: '',
-        priceId: '',
         clientSecret: '',
-        price: ''
+        price: '',
+        amount: '',
+        currency: '',
+        paymentMethod: '',
+        showbuttons: true,
+        csrf: '',
     })
 
     return {values}

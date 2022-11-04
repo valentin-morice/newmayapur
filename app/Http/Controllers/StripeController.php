@@ -71,7 +71,21 @@ class StripeController extends Controller
     {
         $body = json_decode($request->getContent(), true);
         $customer_id = $body['customerId'];
-        $price_id = $body['priceId'];
+
+        $setPriceId = function ($amount) {
+            if ($amount === 16) {
+                return 'price_1M0L1pAO5frM15J3cTPJ3cq2';
+            } else if ($amount === 32) {
+                return 'price_1M0L2FAO5frM15J3fnVXGaNG';
+            } else if ($amount === 64) {
+                return 'price_1M0L2eAO5frM15J3112QQSbZ';
+            } else if ($amount === 108) {
+                return 'price_1M0L31AO5frM15J3NJ21bK2v';
+            }
+        };
+
+        $price_id = $setPriceId($body['amount']);
+
 
         // Create the subscription. Note we're expanding the Subscription's
         // latest invoice and that invoice's payment_intent
@@ -81,6 +95,7 @@ class StripeController extends Controller
             'items' => [[
                 'price' => $price_id,
             ]],
+            'currency' => $body['currency'],
             'payment_behavior' => 'default_incomplete',
             'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
             'expand' => ['latest_invoice.payment_intent'],
@@ -100,7 +115,7 @@ class StripeController extends Controller
             []
         );
 
-        return Inertia::render(Session::get('lang') . '/StripeSuccess', [
+        return Inertia::render('StripeSuccess', [
             'data' => [
                 'customer' => $this->stripe->customers->retrieve($currentPayment->customer)->name,
                 'amount' => $currentPayment->amount / 100,

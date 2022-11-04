@@ -16,5 +16,6 @@ class VerifyCsrfToken extends Middleware
         '/create-customer',
         '/create-subscription',
         '/gocardless/webhooks',
+        '/gc-create'
     ];
 }

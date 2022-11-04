@@ -15,5 +15,5 @@ createInertiaApp({
 })
 
 InertiaProgress.init({
-    showSpinner: false,
+    showSpinner: true,
 })
