@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Redis;
 // UI Routes ------------------------
 
 Route::get('/', function () {
-    return Inertia::render('Hello');
+    return Inertia::render('Home');
 });
 
 Route::get('/donate', function () {

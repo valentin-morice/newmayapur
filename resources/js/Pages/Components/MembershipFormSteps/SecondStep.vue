@@ -22,7 +22,6 @@
             <option value="stripe">Credit Card</option>
             <option value="gocardless">Direct Debit</option>
         </select>
-        <input type="hidden" name="_token" :value="csrf">
     </div>
 </template>
 

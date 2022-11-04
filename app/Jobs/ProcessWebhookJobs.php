@@ -26,6 +26,7 @@ class ProcessWebhookJobs extends SpatieProcessWebhookJob
         $events = $this->webhookCall->payload['events'];
         $event = null;
 
+        // Finding relevant webhook event
         for ($i = 0; $i < count($events); $i++) {
             if (isset($events[$i]['details']['cause'])) {
                 if ($events[$i]['details']['cause'] === 'billing_request_fulfilled') {
@@ -34,24 +35,22 @@ class ProcessWebhookJobs extends SpatieProcessWebhookJob
             }
         }
 
+
         if (isset($event)) {
             if ($event['details']['cause'] === 'billing_request_fulfilled') {
 
                 $request = null;
 
+                // Find matching billing request
                 foreach ($billingRequests as $billingRequest) {
                     if ($billingRequest->json->api_response->body->billing_requests->id === $event['links']['billing_request']) {
                         $request = $billingRequest;
                     }
                 }
 
-
                 $mandate = $client->mandates()->list([
                     "params" => ["customer" => $event['links']['customer']
                     ]]);
-
-                Log::info($mandate->records[0]->id);
-                Log::info($request->amount);
 
                 $client->subscriptions()->create([
                     "params" => [

@@ -12,10 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        'stripe/*',
-        '/create-customer',
-        '/create-subscription',
+        '/stripe/webhooks/*',
         '/gocardless/webhooks',
-        '/gc-create'
     ];
 }
