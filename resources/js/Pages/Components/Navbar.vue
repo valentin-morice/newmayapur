@@ -10,31 +10,28 @@
                     </svg>
                 </label>
                 <ul tabindex="0"
-                    class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                    <li><a>Item 1</a></li>
-                    <li><a>Item 3</a></li>
+                    class="menu menu-compact dropdown-content space-y-1 mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                    <li>
+                        <Link href="/donate">Donate</Link>
+                    </li>
+                    <li>
+                        <Link href="/login">Login</Link>
+                    </li>
                 </ul>
             </div>
-            <a class="btn btn-ghost normal-case text-xl">daisyUI</a>
-        </div>
-        <div class="navbar-center hidden lg:flex">
-            <ul class="menu menu-horizontal p-0 space-x-1">
-                <li>
-                    <Link href="/lang" method="post" :data="{lang: 'FR'}" as="button">
-                        <img style="width:30px"
-                             src="https://cdn-icons-png.flaticon.com/512/330/330490.png">
-                    </Link>
-                </li>
-                <li>
-                    <Link href="/lang" method="post" :data="{lang: 'EN'}" as="button">
-                        <img style="width:30px"
-                             src="https://cdn-icons-png.flaticon.com/512/330/330425.png">
-                    </Link>
-                </li>
-            </ul>
+            <Link href="/" class="btn btn-ghost normal-case text-xl">daisyUI</Link>
         </div>
         <div class="navbar-end">
-            <a class="btn">Get started</a>
+            <div class="navbar-center hidden lg:flex">
+                <ul class="menu menu-horizontal p-0 space-x-2 ml-2">
+                    <li>
+                        <Link href="/donate">Donate</Link>
+                    </li>
+                    <li v-if="!$page.props.isLogged">
+                        <Link href="/login">Login</Link>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
