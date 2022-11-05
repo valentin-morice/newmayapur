@@ -1,13 +1,11 @@
 <?php
 
 use App\Http\Controllers\GoCardlessController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StripeController;
-use GoCardlessPro\Client;
-use GoCardlessPro\Environment;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Illuminate\Support\Facades\Redis;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +28,14 @@ Route::get('/', function () {
 Route::get('/donate', function () {
     return Inertia::render('SubscriptionCreate');
 });
+
+// Auth Routes ----------------------
+
+Route::get('/login', [LoginController::class, 'create'])->name('login');
+
+Route::post('/login', [LoginController::class, 'store']);
+
+Route::post('/logout', [LoginController::class, 'destroy'])->middleware(['auth']);
 
 
 // Stripe Routes ------------------------

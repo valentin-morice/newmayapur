@@ -4,7 +4,6 @@ namespace App\Jobs;
 
 use GoCardlessPro\Client;
 use GoCardlessPro\Environment;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Spatie\WebhookClient\Jobs\ProcessWebhookJob as SpatieProcessWebhookJob;
 

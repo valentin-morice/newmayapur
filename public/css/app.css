@@ -2767,6 +2767,10 @@ html {
   margin-left: auto;
   margin-right: auto;
 }
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
 .mb-16 {
   margin-bottom: 4rem;
 }
@@ -2797,6 +2801,9 @@ html {
 .mb-3 {
   margin-bottom: 0.75rem;
 }
+.mt-1 {
+  margin-top: 0.25rem;
+}
 .block {
   display: block;
 }
@@ -2814,6 +2821,9 @@ html {
 }
 .h-6 {
   height: 1.5rem;
+}
+.h-96 {
+  height: 24rem;
 }
 .min-h-screen {
   min-height: 100vh;
@@ -2848,6 +2858,11 @@ html {
 .cursor-pointer {
   cursor: pointer;
 }
+.appearance-none {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
 .grid-flow-col {
   grid-auto-flow: column;
 }
@@ -2856,6 +2871,9 @@ html {
 }
 .items-center {
   align-items: center;
+}
+.justify-center {
+  justify-content: center;
 }
 .justify-between {
   justify-content: space-between;
@@ -2884,6 +2902,9 @@ html {
 }
 .border-4 {
   border-width: 4px;
+}
+.border {
+  border-width: 1px;
 }
 .border-t {
   border-top-width: 1px;
@@ -2987,6 +3008,10 @@ html {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
+.py-64 {
+  padding-top: 16rem;
+  padding-bottom: 16rem;
+}
 .pt-8 {
   padding-top: 2rem;
 }
@@ -3051,6 +3076,9 @@ html {
 .normal-case {
   text-transform: none;
 }
+.leading-tight {
+  line-height: 1.25;
+}
 .text-gray-500 {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity));
@@ -3074,6 +3102,10 @@ html {
 .text-gray-300 {
   --tw-text-opacity: 1;
   color: rgb(209 213 219 / var(--tw-text-opacity));
+}
+.text-red-500 {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 .placeholder-red-600::-moz-placeholder {
   --tw-placeholder-opacity: 1;
