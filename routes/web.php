@@ -3,6 +3,8 @@
 use App\Http\Controllers\GoCardlessController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StripeController;
+use GoCardlessPro\Client;
+use GoCardlessPro\Environment;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -52,3 +54,29 @@ Route::get('/stripe/success', [StripeController::class, 'success']);
 Route::webhooks('/gocardless/webhooks');
 
 Route::post('/gocardless/create', [GoCardlessController::class, 'create']);
+
+// Admin Routes -----------------------------
+
+Route::get('/admin/overview', function () {
+    return Inertia::render('AdminOverview');
+})->middleware(['auth']);
+
+Route::get('test', function () {
+
+    $client = new Client(array(
+        'access_token' => getenv('GC_ACCESS_TOKEN'),
+        'environment' => Environment::SANDBOX
+    ));
+
+    $customer = $client->customers()->get('CU000QC2AS9RXS');
+
+    \App\Models\Members::first()->update([
+        'city' => $customer->city,
+        'address' => $customer->address_line1 . ' ' . $customer->address_line2,
+        'country' => $customer->country_code,
+        'state' => $customer->region,
+        'postal_code' => $customer->postal_code,
+    ]);
+
+    return 'Yes';
+});

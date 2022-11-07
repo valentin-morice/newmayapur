@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Members;
 use GoCardlessPro\Client;
 use GoCardlessPro\Core\Exception\InvalidStateException;
 use GoCardlessPro\Environment;
@@ -39,6 +40,12 @@ class GoCardlessController extends Controller
                     "currency" => $request->input('currency'),
                 ],
             ]
+        ]);
+
+        Members::create([
+            'name' => $request->input('firstname') . ' ' . $request->input('lastname'),
+            'email' => $request->input('email'),
+            'customer_id' => $billingRequest->links->customer,
         ]);
 
         Redis::set($billingRequest->links->customer,
