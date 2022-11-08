@@ -17,6 +17,12 @@ class GoCardlessProcessWebhookJobs extends SpatieProcessWebhookJob
 
     public function handle()
     {
+        $webhook = Redis::exists($this->webhookCall->payload['meta']['webhook_id']);
+
+        if ($webhook) return;
+
+        Redis::set($this->webhookCall->payload['meta']['webhook_id'], '');
+
         $this->client = new Client(array(
             'access_token' => getenv('GC_ACCESS_TOKEN'),
             'environment' => Environment::SANDBOX
@@ -48,8 +54,10 @@ class GoCardlessProcessWebhookJobs extends SpatieProcessWebhookJob
                 $request = null;
 
                 foreach ($billingRequests as $billingRequest) {
-                    if ($billingRequest->json->api_response->body->billing_requests->id === $event['links']['billing_request']) {
-                        $request = $billingRequest;
+                    if (isset($billingRequest->json)) {
+                        if ($billingRequest->json->api_response->body->billing_requests->id === $event['links']['billing_request']) {
+                            $request = $billingRequest;
+                        }
                     }
                 }
 

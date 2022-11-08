@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Members;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
@@ -25,45 +26,12 @@ class StripeController extends Controller
         $customer = $this->stripe->customers->create(
             [
                 'email' => $result['email'],
-                'name' => $result['firstname'] . ' ' . $result['lastname'],
-                'shipping' => [
-                    'address' => [
-                        'city' => $result['city'],
-                        'country' => $result['country'],
-                        'line1' => $result['address'],
-                        'postal_code' => $result['postalcode'],
-                        'state' => $result['state'],
-                    ],
-                    'name' => $result['firstname'] . ' ' . $result['lastname'],
-                ],
-                'address' => [
-                    'city' => $result['city'],
-                    'country' => $result['country'],
-                    'line1' => $result['address'],
-                    'postal_code' => $result['postalcode'],
-                    'state' => $result['state'],
-                ],
+                'name' => ucfirst(strtolower($result['firstname'])) . ' ' . ucfirst(strtolower($result['lastname'])),
             ]
         );
 
-        $productsdata = [];
-
-        $products = $this->stripe->products->all();
-
-        foreach ($products as $product) {
-            $productsdata[] = [
-                $product['default_price'],
-                $product['name'],
-                $this->stripe->prices->retrieve(
-                    $product['default_price'],
-                    []
-                )->unit_amount / 100,
-            ];
-        }
-
         return response()->json([
             'customerId' => $customer->id,
-            'products' => $productsdata,
         ]);
     }
 
@@ -71,6 +39,17 @@ class StripeController extends Controller
     {
         $body = json_decode($request->getContent(), true);
         $customer_id = $body['customerId'];
+
+        Members::create([
+            'name' => ucfirst(strtolower($body['firstname'])) . ' ' . ucfirst(strtolower($body['lastname'])),
+            'email' => $request->input('email'),
+            'customer_id' => $customer_id,
+            'city' => $body['city'],
+            'address' => $body['address'],
+            'country' => $body['country'],
+            'state' => $body['state'],
+            'postal_code' => $body['postalcode'],
+        ]);
 
         $setPriceId = function ($amount) {
             if ($amount === 16) {

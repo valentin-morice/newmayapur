@@ -40,7 +40,7 @@
 <script>
 export default {
     props: ['form'],
-    beforeMount() {
+    mounted() {
         const vm = this
         fetch('/stripe/create-subscription', {
             method: 'POST',
@@ -49,11 +49,7 @@ export default {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': vm.form.values.csrf,
             },
-            body: JSON.stringify({
-                currency: vm.form.values.currency,
-                amount: vm.form.values.amount,
-                customerId: vm.form.values.customerId,
-            }),
+            body: JSON.stringify(vm.form.values),
         }).then(
             ((response) => response.json())
         ).then((data) => {
