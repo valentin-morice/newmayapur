@@ -12,7 +12,9 @@
                 <li :class="url.includes('overview') ? 'bg-base-200 rounded-[8px]' : ''">
                     <Link href="/admin/overview">Overview</Link>
                 </li>
-                <li><a>All Members</a></li>
+                <li :class="url.includes('members') ? 'bg-base-200 rounded-[8px]' : ''">
+                    <Link href="/admin/members">All Members</Link>
+                </li>
             </ul>
             <Link href="/" class="btn btn-primary m-4 self-end w-100">
                 &#171; Back

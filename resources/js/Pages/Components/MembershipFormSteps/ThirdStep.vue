@@ -3,7 +3,8 @@
         <h2 class="text-2xl font-bold text-gray-700 mb-3">Fill in your details</h2>
         <p class="pb-6">Please click on the button to enter your address and credentials.</p>
         <a :href="link">
-            <button class="btn btn-primary w-full">Pay Now</button>
+            <button :class="link.includes('gocardless') ? '' : 'btn-disabled'" class="btn btn-primary w-full">Pay Now
+            </button>
         </a>
     </div>
     <form v-else class="mb-1">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GoCardlessController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StripeController;
@@ -59,3 +60,7 @@ Route::post('/gocardless/create', [GoCardlessController::class, 'create']);
 Route::get('/admin/overview', function () {
     return Inertia::render('AdminOverview');
 })->middleware(['auth']);
+
+Route::get('/admin/members', [AdminController::class, 'index'])->middleware(['auth']);
+
+Route::get('/admin/members/{id}', [AdminController::class, 'show'])->where('id', '[0-9]+')->middleware(['auth']);
