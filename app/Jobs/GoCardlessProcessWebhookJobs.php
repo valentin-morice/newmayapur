@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Spatie\WebhookClient\Jobs\ProcessWebhookJob as SpatieProcessWebhookJob;
 
-class ProcessWebhookJobs extends SpatieProcessWebhookJob
+class GoCardlessProcessWebhookJobs extends SpatieProcessWebhookJob
 {
 
     public $client;

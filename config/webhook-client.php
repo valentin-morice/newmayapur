@@ -7,13 +7,13 @@ return [
              * This package supports multiple webhook receiving endpoints. If you only have
              * one endpoint receiving webhooks, you can use 'default'.
              */
-            'name' => 'default',
+            'name' => 'gocardless',
 
             /*
              * We expect that every webhook call will be signed using a secret. This secret
              * is used to verify that the payload has not been tampered with.
              */
-            'signing_secret' => getenv('WEBHOOK_CLIENT_SECRET'),
+            'signing_secret' => getenv('GC_WEBHOOK_CLIENT_SECRET'),
 
             /*
              * The name of the header containing the signature.
@@ -56,7 +56,18 @@ return [
              *
              * This should be set to a class that extends \Spatie\WebhookClient\Jobs\ProcessWebhookJob.
              */
-            'process_webhook_job' => \App\Jobs\ProcessWebhookJobs::class,
+            'process_webhook_job' => \App\Jobs\GoCardlessProcessWebhookJobs::class,
+        ],
+        [
+            'name' => 'stripe',
+            'signing_secret' => getenv('STRIPE_WEBHOOK_CLIENT_SECRET'),
+            'signature_header_name' => 'stripe-signature',
+            'signature_validator' => App\Validator\StripeValidator::class,
+            'webhook_profile' => \Spatie\WebhookClient\WebhookProfile\ProcessEverythingWebhookProfile::class,
+            'webhook_response' => \Spatie\WebhookClient\WebhookResponse\DefaultRespondsTo::class,
+            'webhook_model' => \Spatie\WebhookClient\Models\WebhookCall::class,
+            'store_headers' => '*',
+            'process_webhook_job' => \App\Jobs\StripeProcessWebhookJobs::class,
         ],
     ],
 ];
