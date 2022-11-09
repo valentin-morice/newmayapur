@@ -37,11 +37,17 @@ Route::get('/stripe/success', [StripeController::class, 'success']);
 
 Route::webhooks('/stripe/webhooks', 'stripe');
 
+Route::put('/stripe/{id}', [StripeController::class, 'update']);
+
 // GoCardless Routes ------------------------
 
 Route::webhooks('/gocardless/webhooks', 'gocardless');
 
 Route::post('/gocardless/create', [GoCardlessController::class, 'create']);
+
+Route::put('/gocardless/{id}', [GoCardlessController::class, 'update']);
+
+Route::get('/gocardless/success', [GoCardlessController::class, 'success']);
 
 // Admin Routes -----------------------------
 

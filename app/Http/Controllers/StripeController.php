@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Members;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Stripe\StripeClient;
 
@@ -100,7 +99,24 @@ class StripeController extends Controller
                 'amount' => $currentPayment->amount / 100,
                 'paymentId' => $request->query('payment_intent'),
                 'status' => $currentPayment->status,
+                'currency' => $currentPayment->currency,
             ],
         ]);
+    }
+
+    public function update($id)
+    {
+        $member = Members::where('id', $id)->first();
+
+        $data = $this->stripe->customers->retrieve(
+            $member->customer_id,
+            ['expand' => ['subscriptions.data']]
+        );
+
+        $this->stripe->subscriptions->cancel(
+            $data->subscriptions->data[0]->id
+        );
+
+        return Inertia::render('RequestSent');
     }
 }

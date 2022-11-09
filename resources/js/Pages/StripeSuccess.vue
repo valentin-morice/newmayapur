@@ -34,7 +34,7 @@
                 >
                     <p class="text-sm text-gray-600">Amount</p>
                     <p class="text-sm text-gray-600">
-                        €{{ displayAmount(data.amount) }}
+                        <b>{{ data.currency.toUpperCase() }}</b> {{ (Math.round(data.amount * 100) / 100).toFixed(2) }}
                     </p>
                 </div>
                 <div class="items-center flex justify-between px-3 mt-3">
@@ -65,21 +65,6 @@ import {Link} from "@inertiajs/inertia-vue3";
 export default {
     layout: Base,
     props: ["data"],
-    methods: {
-        displayAmount(amount) {
-            if (this.countDecimals(amount) === 2) {
-                return amount;
-            } else if (this.countDecimals(amount) === 1) {
-                return amount + "0";
-            } else if (this.countDecimals(amount) === 0) {
-                return amount + ".00";
-            }
-        },
-        countDecimals(value) {
-            if (Math.floor(value) === value) return 0;
-            return value.toString().split(".")[1].length || 0;
-        },
-    },
     components: {
         Link,
     },

@@ -56,11 +56,12 @@
                     </div>
                 </div>
                 <button class="btn btn-primary">View in {{ member.subscription.payment_method }}</button>
-                <button
+                <Link
                     :class="member.subscription.status !== 'Cancelled' ? 'bg-red-600 hover:bg-red-600' : 'btn-disabled'"
-                    class="btn border-0">Cancel
-                    Subscription
-                </button>
+                    class="btn border-0" method="put" :data="{object: 'cancel'}" as="button"
+                    :href="'/' + member.subscription.payment_method.toLowerCase() + '/' + member.id">
+                    Cancel Subscription
+                </Link>
             </div>
         </div>
     </Admin>

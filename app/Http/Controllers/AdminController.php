@@ -14,10 +14,11 @@ class AdminController extends Controller
     {
         return Inertia::render('AdminMembers', [
             'members' => Members::query()
+                ->has('subscriptions')
                 ->when($request->input(['search']), function ($query, $search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 })
-                ->paginate(7)
+                ->paginate(6)
                 ->withQueryString()
                 ->through(fn($member) => [
                     'id' => $member->id,
