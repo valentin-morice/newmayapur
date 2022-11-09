@@ -8,18 +8,23 @@ use Inertia\Inertia;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         return Inertia::render('AdminMembers', [
-            'members' => \App\Models\Members::paginate(7)->through(fn($member) => [
-                'id' => $member->id,
-                'name' => $member->name,
-                'email' => $member->email,
-                'date' => \Carbon\Carbon::parse($member->created_at)->format('d/m/Y'),
-                'amount' => $member->subscriptions->first()->amount,
-                'currency' => strtoupper($member->subscriptions->first()->currency),
-                'status' => ucfirst($member->subscriptions->first()->status),
-            ])
+            'members' => Members::query()
+                ->when($request->input(['search']), function ($query, $search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })
+                ->paginate(7)
+                ->through(fn($member) => [
+                    'id' => $member->id,
+                    'name' => $member->name,
+                    'email' => $member->email,
+                    'date' => \Carbon\Carbon::parse($member->created_at)->format('d/m/Y'),
+                    'amount' => $member->subscriptions->first()->amount,
+                    'currency' => strtoupper($member->subscriptions->first()->currency),
+                    'status' => ucfirst($member->subscriptions->first()->status),
+                ])
         ]);
     }
 

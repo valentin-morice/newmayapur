@@ -7,7 +7,7 @@
                 <p>{{ member.email }}</p>
             </div>
         </div>
-        <div class="w-[1015px] rounded-2xl m-4 p-6 shadow-lg bg-white">
+        <div class="calculate rounded-2xl m-4 p-6 shadow-lg bg-white">
             <div class="grid grid-cols-2 gap-x-8 gap-y-4">
                 <div>
                     <h2 class="font-bold text-xl text-gray-700">Subscription</h2>

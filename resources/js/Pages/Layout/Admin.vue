@@ -37,3 +37,9 @@ export default {
     }
 }
 </script>
+
+<style>
+.calculate {
+    width: calc(100vw - 22rem);
+}
+</style>

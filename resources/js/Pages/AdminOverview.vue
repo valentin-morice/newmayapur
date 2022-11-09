@@ -1,7 +1,7 @@
 <template>
     <Admin>
         <h1 class="font-bold text-3xl text-gray-700 pt-3 px-6">Membership Overview</h1>
-        <div class="w-full grid grid-cols-2 m-6 gap-4">
+        <div class="calculate grid grid-cols-2 m-4 gap-4">
             <div>
                 <!-- Members Module -->
                 <div class="rounded-2xl px-6 pt-3 pb-5 shadow-lg bg-white">
@@ -12,27 +12,27 @@
                     </div>
                     <div class="grid grid-cols-3 gap-2">
                         <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='fr' rounded="true" size='normal'/>
+                            <CountryFlag country='fr' :rounded="true" size='normal'/>
                             <p>76</p>
                         </div>
                         <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='nz' rounded="true" size='normal'/>
+                            <CountryFlag country='nz' :rounded="true" size='normal'/>
                             <p>19</p>
                         </div>
                         <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='gb' rounded="true" size='normal'/>
+                            <CountryFlag country='gb' :rounded="true" size='normal'/>
                             <p>33</p>
                         </div>
                         <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='au' rounded="true" size='normal'/>
+                            <CountryFlag country='au' :rounded="true" size='normal'/>
                             <p>24</p>
                         </div>
                         <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='us' rounded="true" size='normal'/>
+                            <CountryFlag country='us' :rounded="true" size='normal'/>
                             <p>8</p>
                         </div>
                         <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='in' rounded="true" size='normal'/>
+                            <CountryFlag country='in' :rounded="true" size='normal'/>
                             <p>12</p>
                         </div>
                     </div>
@@ -46,27 +46,27 @@
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='fr' rounded="true" size='normal'/>
+                            <CountryFlag country='fr' :rounded="true" size='normal'/>
                             <p><b>€ </b>3,450.00</p>
                         </div>
                         <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='nz' rounded="true" size='normal'/>
+                            <CountryFlag country='nz' :rounded="true" size='normal'/>
                             <p><b>$ </b>1,243.64</p>
                         </div>
                         <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='gb' rounded="true" size='normal'/>
+                            <CountryFlag country='gb' :rounded="true" size='normal'/>
                             <p><b>£ </b>3,353.42</p>
                         </div>
                         <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='au' rounded="true" size='normal'/>
+                            <CountryFlag country='au' :rounded="true" size='normal'/>
                             <p><b>$ </b>1,867.85</p>
                         </div>
                         <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='us' rounded="true" size='normal'/>
+                            <CountryFlag country='us' :rounded="true" size='normal'/>
                             <p><b>$ </b>633.12</p>
                         </div>
                         <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='in' rounded="true" size='normal'/>
+                            <CountryFlag country='in' :rounded="true" size='normal'/>
                             <p><b>₹ </b>81,234.30</p>
                         </div>
                     </div>
@@ -170,7 +170,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .normal-flag {
     margin: 0 0 0 -12px !important;
 }
