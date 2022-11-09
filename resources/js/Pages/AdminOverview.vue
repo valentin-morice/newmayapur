@@ -74,86 +74,12 @@
             </div>
             <div>
                 <!-- New Members Module -->
-                <div class="rounded-2xl px-6 pt-3 pb-5 shadow-lg bg-white">
-                    <h2 class="font-bold text-xl text-gray-700">New Members</h2>
-                    <div class="mt-4 overflow-x-auto">
-                        <table class="table table-zebra w-full">
-                            <!-- head -->
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Date</th>
-                                <th>Amount</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <!-- row 1 -->
-                            <tr>
-                                <td>Cy Ganderton</td>
-                                <td>31/10/22</td>
-                                <td><p><b>$ </b>32.00</p></td>
-                            </tr>
-                            <!-- row 2 -->
-                            <tr>
-                                <td>Hart Hagerty</td>
-                                <td>02/11/22</td>
-                                <td><b>€ </b>16.00</td>
-                            </tr>
-                            <!-- row 3 -->
-                            <tr>
-                                <td>Brice Swyre</td>
-                                <td>05/11/22</td>
-                                <td><b>€ </b>45.00</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <NewMovements :members="new_members" title="New Members"/>
                 <!-- Cancellations Module -->
-                <div class="mt-4 rounded-2xl px-6 pt-3 pb-5 shadow-lg bg-white">
-                    <h2 class="font-bold text-xl text-gray-700">Cancellations</h2>
-                    <div class="mt-4 overflow-x-auto">
-                        <table class="table table-zebra w-full">
-                            <!-- head -->
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Date</th>
-                                <th>Amount</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <!-- row 1 -->
-                            <tr>
-                                <td>Cy Ganderton</td>
-                                <td>31/10/22</td>
-                                <td><p><b>$ </b>32.00</p></td>
-                            </tr>
-                            <!-- row 2 -->
-                            <tr>
-                                <td>Hart Hagerty</td>
-                                <td>02/11/22</td>
-                                <td><b>€ </b>16.00</td>
-                            </tr>
-                            <!-- row 3 -->
-                            <tr>
-                                <td>Brice Swyre</td>
-                                <td>05/11/22</td>
-                                <td><b>€ </b>45.00</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <NewMovements class="mt-4" :members="new_cancels" title="Cancellations"/>
             </div>
-            <div class="rounded-2xl px-6 pt-3 pb-5 shadow-lg bg-white">
-                <h2 class="font-bold text-xl text-gray-700">Active Members</h2>
-                <progress class="mt-6 progress progress-primary" value="86" max="100"></progress>
-                <div class="flex justify-between mt-4">
-                    <p><span class="uppercase font-bold text-gray-700">ACTIVE: </span>86%</p>
-                    <p><span class="uppercase font-bold text-gray-700">CANCELLED: </span>14%</p>
-                </div>
-            </div>
+            <!-- Active Members Module -->
+            <ActiveMembers :percentage="percentage"/>
         </div>
     </Admin>
 </template>
@@ -161,12 +87,17 @@
 <script>
 import Admin from "./Layout/Admin";
 import CountryFlag from "vue-country-flag-next";
+import NewMovements from "./Components/Overview/NewMovements";
+import ActiveMembers from "./Components/Overview/ActiveMembers";
 
 export default {
     components: {
+        ActiveMembers,
+        NewMovements,
         Admin,
         CountryFlag
-    }
+    },
+    props: ['new_members', 'new_cancels', 'percentage']
 }
 </script>
 

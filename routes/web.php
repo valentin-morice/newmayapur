@@ -45,9 +45,7 @@ Route::post('/gocardless/create', [GoCardlessController::class, 'create']);
 
 // Admin Routes -----------------------------
 
-Route::get('/admin/overview', function () {
-    return Inertia::render('AdminOverview');
-})->middleware(['auth']);
+Route::get('/admin/overview', [AdminController::class, 'overview'])->middleware(['auth']);
 
 Route::get('/admin/members', [AdminController::class, 'index'])->middleware(['auth']);
 

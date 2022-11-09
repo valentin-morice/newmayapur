@@ -52,7 +52,7 @@ export default {
         Admin,
         Link
     },
-    props: ['members'],
+    props: ['members', 'query'],
     methods: {
         getCurrency(code) {
             return getSymbolFromCurrency(code);
@@ -60,7 +60,7 @@ export default {
     },
     data() {
         return {
-            search: '',
+            search: this.query,
         }
     },
     watch: {
