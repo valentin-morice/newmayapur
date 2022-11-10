@@ -3,12 +3,12 @@
         <p class="pb-4">Contribution is <b>monthly</b>. Choose your amount:</p>
         <div class="flex justify-between gap-2">
             <PriceSelector v-for="amount in amounts" @click="setAmount(amount)"
-                           :class="form.values.amount === amount ? 'bg-blue-100 border-blue-400' : 'border-gray-300'"
+                           :class="form.values.member.subscription.amount === amount ? 'bg-blue-100 border-blue-400' : 'border-gray-300'"
                            :amount="amount"
-                           :selectedAmount="form.values.amount"
-                           :currency="form.values.currency"/>
+                           :selectedAmount="form.values.member.subscription.amount"
+                           :currency="form.values.member.subscription.currency"/>
         </div>
-        <select v-model="form.values.currency" class="select select-bordered w-full mt-5">
+        <select v-model="form.values.member.subscription.currency" class="select select-bordered w-full mt-5">
             <option value="" disabled selected>Choose your currency</option>
             <option value="EUR">EUR</option>
             <option value="USD">USD</option>
@@ -17,7 +17,7 @@
             <option value="INR">INR</option>
             <option value="GBP">GBP</option>
         </select>
-        <select v-model="form.values.paymentMethod" class="select select-bordered w-full mt-5">
+        <select v-model="form.values.member.subscription.payment_method" class="select select-bordered w-full mt-5">
             <option value="" disabled selected>Choose your payment method</option>
             <option value="stripe">Credit Card</option>
             <option value="gocardless">Direct Debit</option>
@@ -29,13 +29,13 @@
 import PriceSelector from "../UI/PriceSelector";
 
 export default {
-    props: ['form', 'error'],
+    props: ['form', "errors"],
     components: {
         PriceSelector
     },
     methods: {
         setAmount(amount) {
-            this.form.values.amount = amount
+            this.form.values.member.subscription.amount = amount
         }
     },
     data() {
@@ -44,25 +44,25 @@ export default {
         }
     },
     watch: {
-        'form.values.currency'(value) {
+        'form.values.member.subscription.currency'(value) {
             if (value.length === '') {
-                this.error.currency = 1;
+                this.errors.values.second.currency = 1;
             } else {
-                delete this.error.currency
+                delete this.errors.values.second.currency
             }
         },
-        'form.values.amount'(value) {
+        'form.values.member.subscription.amount'(value) {
             if (value.length === '') {
-                this.error.amount = 1;
+                this.errors.values.second.amount = 1;
             } else {
-                delete this.error.amount
+                delete this.errors.values.second.amount
             }
         },
-        'form.values.paymentMethod'(value) {
+        'form.values.member.subscription.payment_method'(value) {
             if (value.length === '') {
-                this.error.paymentMethod = 1;
+                this.errors.values.second.payment_method = 1;
             } else {
-                delete this.error.paymentMethod
+                delete this.errors.values.second.payment_method
             }
         },
     }

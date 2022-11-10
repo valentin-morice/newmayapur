@@ -1,37 +1,38 @@
 <template>
     <form class="mb-1">
-        <input type="text" :class="error.firstname ? 'bg-red-200 placeholder-red-600' : ''"
-               :placeholder="error.firstname ? error.firstname : 'First Name'" v-model="form.values.firstname"
+        <input type="text" :class="errors.values.first.firstname ? 'bg-red-200 placeholder-red-600' : ''"
+               :placeholder="errors.values.first.firstname ? errors.values.first.firstname : 'First Name'"
+               v-model="form.values.member.firstname"
                class="input input-bordered w-full"/>
-        <input type="text" :class="error.lastname ? 'bg-red-200 placeholder-red-600' : ''"
-               v-model="form.values.lastname" class="mt-4 input input-bordered w-full"
-               :placeholder="error.lastname ? error.lastname : 'Last Name'"/>
-        <input type="text" :class="error.email ? 'bg-red-200 placeholder-red-600' : ''"
-               v-model="form.values.email"
-               :placeholder="error.email ? error.email : 'Email' "
+        <input type="text" :class="errors.values.first.lastname ? 'bg-red-200 placeholder-red-600' : ''"
+               v-model="form.values.member.lastname" class="mt-4 input input-bordered w-full"
+               :placeholder="errors.values.first.lastname ? errors.values.first.lastname : 'Last Name'"/>
+        <input type="text" :class="errors.values.first.email ? 'bg-red-200 placeholder-red-600' : ''"
+               v-model="form.values.member.email"
+               :placeholder="errors.values.first.email ? errors.values.first.email : 'Email' "
                class="mt-4 input input-bordered w-full"/>
     </form>
 </template>
 
 <script>
 export default {
-    props: ['form', 'error'],
+    props: ['form', 'errors'],
     watch: {
-        'form.values.email'(value) {
+        'form.values.member.email'(value) {
             this.validateEmail(value)
         },
-        'form.values.firstname'(value) {
+        'form.values.member.firstname'(value) {
             if (/\s/.test(value) || value.length < 2) {
-                this.error.firstname = 'Please enter a valid first name.'
+                this.errors.values.first.firstname = 'Please enter a valid first name.'
             } else {
-                delete this.error.firstname
+                delete this.errors.values.first.firstname
             }
         },
-        'form.values.lastname'(value) {
+        'form.values.member.lastname'(value) {
             if (/\s/.test(value) || value.length < 2) {
-                this.error.lastname = 'Please enter a valid last name.'
+                this.errors.values.first.lastname = 'Please enter a valid last name.'
             } else {
-                delete this.error.lastname
+                delete this.errors.values.first.lastname
             }
         }
     },
@@ -40,9 +41,9 @@ export default {
             if (!email.match(
                 /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
             )) {
-                this.error.email = 'Please enter a valid email.'
+                this.errors.values.first.email = 'Please enter a valid email.'
             } else {
-                delete this.error.email
+                delete this.errors.values.first.email
             }
         },
     },

@@ -1,58 +1,75 @@
 <template>
-    <div v-if="form.values.paymentMethod === 'gocardless'">
-        <h2 class="text-2xl font-bold text-gray-700 mb-3">Fill in your details</h2>
-        <p class="pb-6">Please click on the button to enter your address and credentials.</p>
-        <a :href="link">
-            <button :class="link.includes('gocardless') ? '' : 'btn-disabled'" class="btn btn-primary w-full">Pay Now
-            </button>
-        </a>
-    </div>
-    <form v-else class="mb-1">
-        <input type="text" :class="error.city ? 'bg-red-200 placeholder-red-600' : ''"
-               v-model="form.values.city" :placeholder="error.city ? error.city : 'City'"
-               class="input input-bordered w-full"/>
-        <select class="mt-4 select select-bordered w-full"
-                v-model="form.values.country">
-            <option value="" class="font-normal text-gray-300" disabled selected>Country</option>
-            <option v-for="country in countries" :value="country.code">
-                {{ country.country }}
-            </option>
-        </select>
-        <input :class="error.address ? 'bg-red-200 placeholder-red-600' : ''" type="text" v-model="form.values.address"
-               :placeholder="error.address ? error.address : 'Address'"
-               class="mt-4 input input-bordered w-full"/>
-        <div class="flex space-x-2">
-            <input type="text" v-model="form.values.state" placeholder="State" class="mt-4 input input-bordered w-1/2"/>
-            <input type="text" :class="error.postalcode ? 'bg-red-200 placeholder-red-600' : ''"
-                   v-model="form.values.postalcode" :placeholder="error.postalcode ? error.postalcode : 'Postal Code'"
-                   class="mt-4 input input-bordered w-1/2"/>
+    <div>
+        <ErrorNotification :error="errors.values.server"/>
+        <div v-if="form.values.member.subscription.payment_method === 'gocardless'">
+            <h2 class="text-2xl font-bold text-gray-700 mb-3">Fill in your details</h2>
+            <p class="pb-6">Please click on the button to enter your address and credentials.</p>
+            <a :href="link">
+                <button :class="link.includes('gocardless') ? '' : 'btn-disabled'" class="btn btn-primary w-full">Pay
+                    Now
+                </button>
+            </a>
         </div>
-    </form>
+        <form v-else class="mb-1">
+            <input type="text" :class="errors.values.third.city ? 'bg-red-200 placeholder-red-600' : ''"
+                   v-model="form.values.member.address.city"
+                   :placeholder="errors.values.third.city ? errors.values.third.city : 'City'"
+                   class="input input-bordered w-full"/>
+            <select class="mt-4 select select-bordered w-full"
+                    v-model="form.values.member.address.country">
+                <option value="" class="font-normal text-gray-300" disabled selected>Country</option>
+                <option v-for="item in countries" :value="item.code">
+                    {{ item.country }}
+                </option>
+            </select>
+            <input :class="errors.values.third.address ? 'bg-red-200 placeholder-red-600' : ''" type="text"
+                   v-model="form.values.member.address.street"
+                   :placeholder="errors.values.third.address ? errors.values.third.address : 'Address'"
+                   class="mt-4 input input-bordered w-full"/>
+            <div class="flex space-x-2">
+                <input type="text" v-model="form.values.member.address.state" placeholder="State"
+                       class="mt-4 input input-bordered w-1/2"/>
+                <input type="text" :class="errors.values.third.postal_code ? 'bg-red-200 placeholder-red-600' : ''"
+                       v-model="form.values.member.address.postal_code"
+                       :placeholder="errors.values.third.postal_code ? errors.values.third.postal_code : 'Postal Code'"
+                       class="mt-4 input input-bordered w-1/2"/>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>
+import ErrorNotification from "../UI/ErrorNotification";
 
 export default {
-    props: ['form', 'error'],
+    components: {ErrorNotification},
+    props: ['form', "errors"],
     beforeMount() {
-        if (this.form.values.paymentMethod === 'gocardless') {
-            this.form.values.showbuttons = false
+        if (this.form.values.member.subscription.payment_method === 'gocardless') {
+            this.form.values.utils.show_buttons = false
             const vm = this
             fetch('/gocardless/create', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': vm.form.values.csrf,
+                    'X-CSRF-TOKEN': this.form.values.utils.csrf,
                 },
                 body: JSON.stringify(this.form.values)
             })
-                .then((response) => response.json())
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error();
+                })
                 .then((data) => {
-                    vm.name = data.name
                     vm.link = data.link
                 })
-        } else if (this.form.values.paymentMethod === 'stripe') {
+                .catch(function () {
+                    vm.errors.values.server = true;
+                });
+        } else if (this.form.values.member.subscription.payment_method === 'stripe') {
             const vm = this
             fetch('/stripe/create-customer',
                 {
@@ -60,16 +77,24 @@ export default {
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': vm.form.values.csrf
+                        'X-CSRF-TOKEN': vm.form.values.utils.csrf
                     },
                     body: JSON.stringify(vm.form.values)
                 }
             )
-                .then((response) => response.json())
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error();
+                })
                 .then((data) => {
-                        vm.form.values.customerId = data.customerId
+                        vm.form.values.member.subscription.customer_id = data.customer_id
                     }
                 )
+                .catch(function () {
+                    vm.errors.values.server = true;
+                });
         }
     },
     data() {
@@ -138,32 +163,32 @@ export default {
         }
     },
     watch: {
-        'form.values.address'(value) {
+        'form.values.member.address.street'(value) {
             if (value.length < 2) {
-                this.error.address = 'Please enter a valid address.'
+                this.errors.values.third.address = 'Please enter a valid address.'
             } else {
-                delete this.error.address
+                delete this.errors.values.third.address
             }
         },
-        'form.values.city'(value) {
+        'form.values.member.address.city'(value) {
             if (value.length < 2) {
-                this.error.city = 'Please enter a valid city.'
+                this.errors.values.third.city = 'Please enter a valid city.'
             } else {
-                delete this.error.city
+                delete this.errors.values.third.city
             }
         },
-        'form.values.postalcode'(value) {
+        'form.values.member.address.postal_code'(value) {
             if (value.length < 2) {
-                this.error.postalcode = 'Invalid code.'
+                this.errors.values.third.postal_code = 'Invalid code.'
             } else {
-                delete this.error.postalcode
+                delete this.errors.values.third.postal_code
             }
         },
-        'form.values.country'(value) {
+        'form.values.member.address.country'(value) {
             if (value.length === 0) {
-                this.error.country = 1
+                this.errors.values.third.country = 1
             } else {
-                delete this.error.country
+                delete this.errors.values.third.country
             }
         }
     },

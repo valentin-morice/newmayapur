@@ -34,11 +34,14 @@ export default {
         }
     },
     beforeMount() {
-        this.form.values.showbuttons = false
+        this.form.values.utils.show_buttons = false
     },
     computed: {
         elements() {
-            return this.stripe.elements({clientSecret: this.form.values.clientSecret, appearance: {}})
+            return this.stripe.elements({
+                clientSecret: this.form.values.member.subscription.client_secret,
+                appearance: {}
+            })
         }
     },
     mounted() {

@@ -3,16 +3,18 @@
         <SlideUpDown v-model="active" :duration="1000">
             <Component
                 :form="form"
-                :error="error[int]"
+                :errors="errors"
                 class="pt-2"
                 :is="steps[int]"></Component>
         </SlideUpDown>
-        <div v-if="form.values.showbuttons !== false" class="flex justify-between gap-2">
+        <div v-if="form.values.utils.show_buttons !== false" class="flex justify-between gap-2">
             <button @click="previous" :class="int === 0 ? 'btn-disabled' : ''"
                     class="btn btn-primary w-44 mt-6">
                 &#171; Previous
             </button>
-            <button @click="next" class="btn w-44 btn-primary mt-6">Next &#187;</button>
+            <button @click="next" :class="errors.values.server ? 'btn-disabled' : ''" class="btn w-44 btn-primary mt-6">
+                Next &#187;
+            </button>
         </div>
     </div>
 </template>
@@ -24,6 +26,7 @@ import ThirdStep from "./MembershipFormSteps/ThirdStep";
 import FourthStep from "./MembershipFormSteps/FourthStep";
 import FifthStep from "./MembershipFormSteps/FifthStep";
 import useForm from "../Composables/formValues";
+import useFormErrors from "../Composables/formErrors";
 
 export default {
     data() {
@@ -38,27 +41,7 @@ export default {
             int: 0,
             active: true,
             form: useForm(),
-            error: [
-                {
-                    firstname: '',
-                    lastname: '',
-                    email: '',
-                },
-                {
-                    currency: '',
-                    amount: '',
-                    paymentMethod: '',
-                },
-                {
-                    address: '',
-                    city: '',
-                    country: '',
-                    postalcode: '',
-                },
-                {
-                    priceId: '',
-                }
-            ]
+            errors: useFormErrors(),
         }
     },
     components: {
@@ -71,11 +54,11 @@ export default {
     methods: {
         next() {
             if (this.int === 0) {
-                if (Object.keys(this.error[0]).length !== 0) return
+                if (Object.keys(this.errors.values.first).length !== 0) return
             } else if (this.int === 1) {
-                if (Object.keys(this.error[1]).length !== 0) return
+                if (Object.keys(this.errors.values.second).length !== 0) return
             } else if (this.int === 2) {
-                if (Object.keys(this.error[2]).length !== 0) return
+                if (Object.keys(this.errors.values.third).length !== 0) return
             }
             this.active = false
             setTimeout(() => {
@@ -96,7 +79,7 @@ export default {
         },
     },
     mounted() {
-        this.form.values.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        this.form.values.utils.csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
     }
 }
 </script>

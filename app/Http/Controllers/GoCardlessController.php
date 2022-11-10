@@ -28,38 +28,43 @@ class GoCardlessController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'email' => 'email|required',
-            'amount' => 'required',
-            'currency' => 'required',
+            'member.firstname' => 'required',
+            'member.lastname' => 'required',
+            'member.email' => 'email|required',
+            'member.subscription.amount' => 'required',
+            'member.subscription.currency' => 'required',
         ]);
+
+        $name = $request->input('member.firstname') . ' ' . $request->input('member.lastname');
+        $email = $request->input('member.email');
+        $amount = $request->input('member.subscription.amount');
+        $currency = $request->input('member.subscription.currency');
 
         $billingRequest = $this->client->billingRequests()->create([
             "params" => [
                 "mandate_request" => [
-                    "currency" => $request->input('currency'),
+                    "currency" => $currency,
                 ],
             ]
         ]);
 
         Members::create([
-            'name' => $request->input('firstname') . ' ' . $request->input('lastname'),
-            'email' => $request->input('email'),
+            'name' => $name,
+            'email' => $email,
             'customer_id' => $billingRequest->links->customer,
         ]);
 
         Redis::set($billingRequest->links->customer,
-            json_encode(['json' => $billingRequest, 'amount' => $request->input('amount') * 100]),
+            json_encode(['json' => $billingRequest, 'amount' => $amount * 100]),
             'EX',
             86400
         );
 
         $redirect_url = "http://localhost/gocardless/success?" .
-            "amount=" . $request->input('amount') .
-            '&name=' . $request->input('firstname') . '_' . $request->input('lastname') .
+            "amount=" . $amount .
+            '&name=' . $name .
             '&id=' . $billingRequest->id .
-            '&currency=' . $request->input('currency');
+            '&currency=' . $currency;
 
         $flow = $this->client->billingRequestFlows()->create([
             "params" => [
@@ -69,9 +74,9 @@ class GoCardlessController extends Controller
                     "billing_request" => $billingRequest->id
                 ],
                 "prefilled_customer" => [
-                    "given_name" => $request->input('firstname'),
-                    "family_name" => $request->input('lastname'),
-                    "email" => $request->input('email'),
+                    "given_name" => $request->input('member.firstname'),
+                    "family_name" => $request->input('member.lastname'),
+                    "email" => $request->input('member.email'),
                 ],
                 "lock_currency" => true,
             ]
@@ -79,7 +84,6 @@ class GoCardlessController extends Controller
 
         return response()->json([
             'link' => $flow->authorisation_url,
-            'name' => $request->input('firstname') . ' ' . $request->input('lastname')
         ]);
     }
 

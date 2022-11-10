@@ -24,30 +24,31 @@ class StripeController extends Controller
 
         $customer = $this->stripe->customers->create(
             [
-                'email' => $result['email'],
-                'name' => ucfirst(strtolower($result['firstname'])) . ' ' . ucfirst(strtolower($result['lastname'])),
+                'email' => $result['member']['email'],
+                'name' => ucfirst(strtolower($result['member']['firstname'])) . ' ' . ucfirst(strtolower($result['member']['lastname'])),
             ]
         );
 
         return response()->json([
-            'customerId' => $customer->id,
+            'customer_id' => $customer->id,
         ]);
     }
 
     public function create_subscription(Request $request)
     {
-        $body = json_decode($request->getContent(), true);
-        $customer_id = $body['customerId'];
+        $result = json_decode($request->getContent(), true);
+
+        $customer_id = $result['member']['subscription']['customer_id'];
 
         Members::create([
-            'name' => ucfirst(strtolower($body['firstname'])) . ' ' . ucfirst(strtolower($body['lastname'])),
-            'email' => $request->input('email'),
+            'name' => ucfirst(strtolower($result['member']['firstname'])) . ' ' . ucfirst(strtolower($result['member']['lastname'])),
+            'email' => $result['member']['email'],
             'customer_id' => $customer_id,
-            'city' => $body['city'],
-            'address' => $body['address'],
-            'country' => $body['country'],
-            'state' => $body['state'],
-            'postal_code' => $body['postalcode'],
+            'city' => $result['member']['address']['city'],
+            'address' => $result['member']['address']['street'],
+            'country' => $result['member']['address']['country'],
+            'state' => $result['member']['address']['state'],
+            'postal_code' => $result['member']['address']['postal_code'],
         ]);
 
         $setPriceId = function ($amount) {
@@ -62,7 +63,7 @@ class StripeController extends Controller
             }
         };
 
-        $price_id = $setPriceId($body['amount']);
+        $price_id = $setPriceId($result['member']['subscription']['amount']);
 
 
         // Create the subscription. Note we're expanding the Subscription's
@@ -73,15 +74,14 @@ class StripeController extends Controller
             'items' => [[
                 'price' => $price_id,
             ]],
-            'currency' => $body['currency'],
+            'currency' => $result['member']['subscription']['currency'],
             'payment_behavior' => 'default_incomplete',
             'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
             'expand' => ['latest_invoice.payment_intent'],
         ]);
 
         return response()->json([
-            'subscriptionId' => $subscription->id,
-            'clientSecret' => $subscription->latest_invoice->payment_intent->client_secret
+            'client_secret' => $subscription->latest_invoice->payment_intent->client_secret
         ]);
     }
 
