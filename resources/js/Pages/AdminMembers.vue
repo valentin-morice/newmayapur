@@ -22,7 +22,8 @@
                             <Link :href="'/admin/members/' + member.id">{{ member.name }}</Link>
                         </td>
                         <td>{{ member.date }}</td>
-                        <td><p><b>{{ getCurrency(member.currency) }}</b> {{ member.amount }}.00</p></td>
+                        <td><p><b>{{ getCurrency(member.currency) }}</b>
+                            {{ (Math.round(member.amount * 100) / 100).toFixed(2) }}</p></td>
                         <td>{{ member.status }}</td>
                     </tr>
                     </tbody>

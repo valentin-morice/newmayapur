@@ -23,6 +23,7 @@
         "daisyui": "^2.33.0",
         "vue": "^3.2.41",
         "vue-country-flag-next": "^2.3.2",
+        "vue-currency-input": "^3.0.2",
         "vue3-slide-up-down": "^1.2.5",
         "vuex": "^4.0.2"
     }

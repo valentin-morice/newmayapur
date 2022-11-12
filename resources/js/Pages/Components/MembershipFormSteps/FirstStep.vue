@@ -15,6 +15,7 @@
 </template>
 
 <script>
+
 export default {
     props: ['form', 'errors'],
     watch: {

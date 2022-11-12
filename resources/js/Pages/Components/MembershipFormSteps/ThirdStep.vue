@@ -40,7 +40,6 @@
 
 <script>
 import ErrorNotification from "../UI/ErrorNotification";
-import notEmpty from "../../Composables/validateInput"
 
 export default {
     components: {ErrorNotification},

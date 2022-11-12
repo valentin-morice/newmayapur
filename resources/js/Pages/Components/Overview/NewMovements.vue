@@ -23,7 +23,7 @@
                             <b>
                                 {{ getCurrency(member.subscription.currency) }}
                             </b>
-                            {{ member.subscription.amount }}.00
+                            {{ (Math.round(member.subscription.amount * 100) / 100).toFixed(2) }}
                         </p>
                     </td>
                 </tr>

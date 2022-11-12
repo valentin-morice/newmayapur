@@ -70,11 +70,19 @@ class AdminController extends Controller
 
         $new_cancels_members = $this->filter($new_cancels);
 
+
         return Inertia::render('AdminOverview', [
             'new_members' => $new_members,
             'new_cancels' => $new_cancels_members,
             'percentage' => [
                 'value' => $this->percentage(Subscriptions::where('status', 'active')->get()->toArray(), Subscriptions::where('status', 'cancelled')->get()->toArray())
+            ],
+            'members' => [
+                'total' => Members::has('subscriptions')->count(),
+            ],
+            'members_loc' => $this->memberByLoc(),
+            'subscriptions' => [
+                'total' => Subscriptions::where('status', 'active')->sum('amount'),
             ]
         ]);
     }
@@ -100,7 +108,7 @@ class AdminController extends Controller
                 ], 'subscription' => [
                     'amount' => $item->amount,
                     'currency' => $item->currency
-                ]
+                ],
             ];
         }
 
@@ -113,5 +121,20 @@ class AdminController extends Controller
             ->take(3)
             ->orderBy('created_at', 'DESC')
             ->get();
+    }
+
+    private function memberByLoc()
+    {
+        $groups = \App\Models\Members::has('subscriptions')->get()->mapToGroups(function ($item, $key) {
+            return [$item['country'] => $item];
+        })->toArray();
+
+        $arr = [];
+
+        for ($i = 0; $i < count($groups); $i++) {
+            $arr[] = [array_keys($groups)[$i] => count($groups[array_keys($groups)[$i]])];
+        }
+
+        return $arr;
     }
 }

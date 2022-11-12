@@ -8,32 +8,13 @@
                     <h2 class="font-bold text-xl text-gray-700">Members</h2>
                     <div class="p-2 my-4 flex bg-gray-100 rounded justify-between">
                         <span class="uppercase font-bold">Total</span>
-                        <span>201</span>
+                        <span>{{ members.total }}</span>
                     </div>
                     <div class="grid grid-cols-3 gap-2">
-                        <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='fr' :rounded="true" size='normal'/>
-                            <p>76</p>
-                        </div>
-                        <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='nz' :rounded="true" size='normal'/>
-                            <p>19</p>
-                        </div>
-                        <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='gb' :rounded="true" size='normal'/>
-                            <p>33</p>
-                        </div>
-                        <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='au' :rounded="true" size='normal'/>
-                            <p>24</p>
-                        </div>
-                        <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='us' :rounded="true" size='normal'/>
-                            <p>8</p>
-                        </div>
-                        <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                            <CountryFlag country='in' :rounded="true" size='normal'/>
-                            <p>12</p>
+                        <div v-for="members in members_loc"
+                             class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
+                            <CountryFlag :country='Object.keys(members)[0]' :rounded="true" size='normal'/>
+                            <p>{{ Object.values(members)[0] }}</p>
                         </div>
                     </div>
                 </div>
@@ -42,7 +23,7 @@
                     <h2 class="font-bold text-xl text-gray-700">Subscriptions</h2>
                     <div class="p-2 my-4 flex bg-gray-100 rounded justify-between">
                         <p><span class="uppercase font-bold">Total</span> /month</p>
-                        <span><b>€ </b>8,198.00</span>
+                        <span><b>€ </b>{{ (Math.round(subscriptions.total * 100) / 100).toFixed(2) }}</span>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
@@ -97,7 +78,7 @@ export default {
         Admin,
         CountryFlag
     },
-    props: ['new_members', 'new_cancels', 'percentage']
+    props: ['new_members', 'new_cancels', 'percentage', 'members', 'members_loc', 'subscriptions']
 }
 </script>
 
