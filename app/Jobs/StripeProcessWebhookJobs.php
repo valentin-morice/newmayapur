@@ -18,7 +18,7 @@ class StripeProcessWebhookJobs extends SpatieProcessWebhookJob
 
         $event_type = $this->webhookCall->payload['type'];
         $this->process_subscription($event_type);
-        
+
         Redis::set($this->webhookCall->payload['id'], '');
     }
 
@@ -33,7 +33,7 @@ class StripeProcessWebhookJobs extends SpatieProcessWebhookJob
                 $subscription = Subscriptions::create([
                     'members_id' => $member->id,
                     'amount' => $this->webhookCall->payload['data']['object']['plan']['amount'] / 100,
-                    'currency' => $this->webhookCall->payload['data']['object']['plan']['currency'],
+                    'currency' => strtoupper($this->webhookCall->payload['data']['object']['plan']['currency']),
                     'status' => $this->webhookCall->payload['data']['object']['status'],
                     'payment_method' => 'stripe',
                 ]);

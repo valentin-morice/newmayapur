@@ -56,3 +56,8 @@ Route::get('/admin/overview', [AdminController::class, 'overview'])->middleware(
 Route::get('/admin/members', [AdminController::class, 'index'])->middleware(['auth']);
 
 Route::get('/admin/members/{id}', [AdminController::class, 'show'])->where('id', '[0-9]+')->middleware(['auth']);
+
+Route::get('/test', function () {
+
+
+});

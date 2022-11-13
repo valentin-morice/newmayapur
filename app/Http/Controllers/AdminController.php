@@ -5,11 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Members;
 use App\Models\Subscriptions;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Psr\Http\Message\ResponseInterface;
+
 
 class AdminController extends Controller
 {
+    public $client;
+
+    public function __construct()
+    {
+        $this->client = new Client([
+            'base_uri' => 'https://api.apilayer.com',
+            'timeout' => 100,
+            'headers' => ['apikey' => getenv('API_CURRENCY_CONVERTOR')]
+        ]);
+    }
+
     public function index(Request $request)
     {
         return Inertia::render('AdminMembers', [
@@ -62,6 +77,7 @@ class AdminController extends Controller
 
     public function overview()
     {
+
         $new_cancels = $this->new_movements('cancelled');
 
         $new_subscriptions = $this->new_movements('active');
@@ -82,7 +98,8 @@ class AdminController extends Controller
             ],
             'members_loc' => $this->memberByLoc(),
             'subscriptions' => [
-                'total' => Subscriptions::where('status', 'active')->sum('amount'),
+                'total' => $this->subscriptions()['total'],
+                'all' => $this->subscriptions()['all'],
             ]
         ]);
     }
@@ -136,5 +153,30 @@ class AdminController extends Controller
         }
 
         return $arr;
+    }
+
+    private function subscriptions()
+    {
+        $groups = \App\Models\Subscriptions::where('status', 'active')->get()->mapToGroups(function ($item, $key) {
+            return [$item['currency'] => $item['amount']];
+        })->toArray();
+
+        $arr = [];
+
+        for ($i = 0; $i < count($groups); $i++) {
+            $arr[] = [array_keys($groups)[$i] => array_sum($groups[array_keys($groups)[$i]])];
+        }
+
+        $converted = [];
+
+        foreach ($arr as $value) {
+            $number = json_decode($this->client->get('/exchangerates_data/convert?to=eur&from=' . key($value) . '&amount=' . $value[key($value)])->getBody()->getContents(), true)['result'];
+            $converted[] = number_format((float)$number, 2, '.', ',');
+        }
+
+        return [
+            'total' => array_sum($converted),
+            'all' => $arr
+        ];
     }
 }
