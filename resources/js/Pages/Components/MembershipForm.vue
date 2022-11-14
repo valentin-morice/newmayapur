@@ -5,7 +5,8 @@
                 :form="form"
                 :errors="errors"
                 class="pt-2"
-                :is="steps[int]"></Component>
+                :is="steps[int]"
+            ></Component>
         </SlideUpDown>
         <div v-if="form.values.utils.show_buttons !== false" class="flex justify-between gap-2">
             <button @click="previous" :class="int === 0 ? 'btn-disabled' : ''"

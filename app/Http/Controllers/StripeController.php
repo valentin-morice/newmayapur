@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Members;
+use Error;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Stripe\Customer;
+use Stripe\Exception\ApiErrorException;
+use Stripe\PaymentIntent;
+use Stripe\Stripe;
 use Stripe\StripeClient;
 
 class StripeController extends Controller
@@ -32,6 +37,43 @@ class StripeController extends Controller
         return response()->json([
             'customer_id' => $customer->id,
         ]);
+    }
+
+    public function create_payment(Request $request)
+    {
+        Stripe::setApiKey(getenv('STRIPE_SECRET_KEY'));
+
+        try {
+
+            // Alternatively, set up a webhook to listen for the payment_intent.succeeded event
+            // and attach the PaymentMethod to a new Customer
+            $customer = Customer::create([
+                'name' => $request->input('firstname') . ' ' . $request->input('lastname'),
+                'email' => $request->input('email'),
+            ]);
+
+            // Create a PaymentIntent with amount and currency
+            $paymentIntent = PaymentIntent::create([
+                'amount' => $request->input('payment.amount') * 100,
+                'customer' => $customer->id,
+                'setup_future_usage' => 'off_session',
+                'currency' => strtolower($request->input('payment.currency.currency')),
+                'automatic_payment_methods' => [
+                    'enabled' => true,
+                ],
+            ]);
+
+            return response()->json(
+                [
+                    'client_secret' => $paymentIntent->client_secret,
+                    'stripe_pk' => getenv('STRIPE_PUBLISHABLE_KEY')
+                ]
+            );
+        } catch (Error $e) {
+            return response('', 500)->json(['error' => $e->getMessage()]);
+        } catch (ApiErrorException $e) {
+            return response('', 500)->json(['error' => $e->getMessage()]);
+        }
     }
 
     public function create_subscription(Request $request)

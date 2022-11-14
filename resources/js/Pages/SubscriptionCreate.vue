@@ -2,9 +2,9 @@
     <div class="hero relative min-h-screen bg-base-200">
         <div class="absolute top-6 right-10 flex gap-2">
             <span @click="() => this.form = 'member'"
-                  class="text-white px-4 py-2 font-bold rounded-[8px] bg-primary hover:cursor-pointer">Become a Member</span>
+                  class="text-white px-4 py-2 font-bold rounded-[8px] bg-primary hover:cursor-pointer z-20">Become a Member</span>
             <span @click="() => this.form = 'donation'"
-                  class="text-white px-4 py-2 font-bold rounded-[8px] bg-primary hover:cursor-pointer">Single Donation</span>
+                  class="text-white px-4 py-2 font-bold rounded-[8px] bg-primary hover:cursor-pointer z-20">Single Donation</span>
         </div>
         <div class="px-16 hero-content flex-col lg:flex-row-reverse">
             <div class="text-center lg:text-left lg:ml-8">

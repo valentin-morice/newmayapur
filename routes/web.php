@@ -33,11 +33,13 @@ Route::post('/stripe/create-customer', [StripeController::class, 'create_custome
 
 Route::post('/stripe/create-subscription', [StripeController::class, 'create_subscription']);
 
-Route::get('/stripe/success', [StripeController::class, 'success'])->where('id', '[0-9]+');
+Route::post('/stripe/create-payment', [StripeController::class, 'create_payment']);
+
+Route::get('/stripe/success', [StripeController::class, 'success']);
 
 Route::webhooks('/stripe/webhooks', 'stripe');
 
-Route::put('/stripe/{id}', [StripeController::class, 'update']);
+Route::put('/stripe/{id}', [StripeController::class, 'update'])->where('id', '[0-9]+');
 
 // GoCardless Routes ------------------------
 
