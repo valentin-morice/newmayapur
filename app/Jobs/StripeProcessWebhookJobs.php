@@ -3,13 +3,16 @@
 namespace App\Jobs;
 
 use App\Models\Members;
+use App\Models\Payments;
 use App\Models\Subscriptions;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Spatie\WebhookClient\Jobs\ProcessWebhookJob as SpatieProcessWebhookJob;
+use Spatie\WebhookClient\Models\WebhookCall;
 
 class StripeProcessWebhookJobs extends SpatieProcessWebhookJob
 {
+
     public function handle()
     {
         $webhook = Redis::exists($this->webhookCall->payload['id']);
@@ -17,9 +20,38 @@ class StripeProcessWebhookJobs extends SpatieProcessWebhookJob
         if ($webhook) return;
 
         $event_type = $this->webhookCall->payload['type'];
-        $this->process_subscription($event_type);
+
+        if (str_contains($event_type, 'subscription')) {
+            $this->process_subscription($event_type);
+        } else if (str_contains($event_type, 'payment_intent')) {
+            $this->process_payment_intent();
+        }
 
         Redis::set($this->webhookCall->payload['id'], '');
+    }
+
+    private function process_payment_intent()
+    {
+        $client = new \Stripe\StripeClient(getenv('STRIPE_SECRET_KEY'));
+
+        $customer = $client->customers->retrieve($this->webhookCall->payload['data']['object']['customer'], []);
+
+        $payment = Payments::where('payment_id', $this->webhookCall->payload['data']['object']['id'])->first();
+
+        if ($payment) {
+            $payment->update([
+                'status' => $this->webhookCall->payload['data']['object']['status']
+            ]);
+        }
+
+        Payments::create([
+            'name' => $customer->name,
+            'amount' => $this->webhookCall->payload['data']['object']['amount'] / 100,
+            'payment_id' => $this->webhookCall->payload['data']['object']['id'],
+            'email' => $customer->email,
+            'status' => $this->webhookCall->payload['data']['object']['status'],
+            'currency' => strtoupper($this->webhookCall->payload['data']['object']['currency'])
+        ]);
     }
 
     public function process_subscription($event_type)
