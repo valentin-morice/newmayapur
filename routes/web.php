@@ -59,7 +59,8 @@ Route::get('/admin/members', [AdminController::class, 'index'])->middleware(['au
 
 Route::get('/admin/members/{id}', [AdminController::class, 'show'])->where('id', '[0-9]+')->middleware(['auth']);
 
+Route::get('/admin/payments', [AdminController::class, 'index_payments'])->middleware(['auth']);
+
 Route::get('/test', function () {
-
-
+    return 'Test Route';
 });

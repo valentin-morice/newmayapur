@@ -62,7 +62,6 @@ export default {
                 throw new Error();
             })
             .then((data) => {
-                    console.log(data)
                     vm.form.values.member.subscription.client_secret = data.client_secret
                 }
             )

@@ -36,12 +36,14 @@ class StripeProcessWebhookJobs extends SpatieProcessWebhookJob
 
         $customer = $client->customers->retrieve($this->webhookCall->payload['data']['object']['customer'], []);
 
-        $payment = Payments::where('payment_id', $this->webhookCall->payload['data']['object']['id'])->first();
+        $payment = Payments::where('payment_id', $this->webhookCall->payload['data']['object']['id'])->exists();
 
         if ($payment) {
-            $payment->update([
+            Payments::where('payment_id', $this->webhookCall->payload['data']['object']['id'])->first()->update([
                 'status' => $this->webhookCall->payload['data']['object']['status']
             ]);
+
+            return;
         }
 
         Payments::create([

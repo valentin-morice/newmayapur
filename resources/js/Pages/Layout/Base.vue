@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="$page.props.isLogged"
-             class="z-20 justify-center text-white fixed w-full flex bg-gray-800 py-2 px-6 gap-2">
+             class="z-50 justify-center text-white fixed w-full flex bg-gray-800 py-2 px-6 gap-2">
             <Link href="/admin/overview">
                 <button class="hover:bg-blue-800 py-1 px-2 bg-primary rounded">Admin</button>
             </Link>

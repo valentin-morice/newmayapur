@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Members;
+use App\Models\Payments;
 use App\Models\Subscriptions;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -41,6 +42,28 @@ class AdminController extends Controller
                     'amount' => $member->subscriptions->first()->amount,
                     'currency' => strtoupper($member->subscriptions->first()->currency),
                     'status' => ucfirst($member->subscriptions->first()->status),
+                ]),
+            'query' => $request->input(['search'])
+        ]);
+    }
+
+    public function index_payments(Request $request)
+    {
+        return Inertia::render('AdminPayments', [
+            'payments' => Payments::query()
+                ->when($request->input(['search']), function ($query, $search) {
+                    $query->where('name', 'like', '%' . $search . '%');
+                })
+                ->paginate(6)
+                ->withQueryString()
+                ->through(fn($payment) => [
+                    'id' => $payment->id,
+                    'name' => $payment->name,
+                    'email' => $payment->email,
+                    'date' => Carbon::parse($payment->created_at)->format('d/m/Y'),
+                    'amount' => $payment->amount,
+                    'currency' => $payment->currency,
+                    'status' => ucfirst($payment->status),
                 ]),
             'query' => $request->input(['search'])
         ]);

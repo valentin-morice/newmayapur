@@ -15,6 +15,9 @@
                 <li :class="url.includes('members') ? 'bg-base-200 rounded-[8px]' : ''">
                     <Link href="/admin/members">All Members</Link>
                 </li>
+                <li :class="url.includes('payments') ? 'bg-base-200 rounded-[8px]' : ''">
+                    <Link href="/admin/payments">All Payments</Link>
+                </li>
             </ul>
             <Link href="/" class="btn btn-primary m-4 self-end w-100">
                 &#171; Back

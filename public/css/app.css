@@ -3131,6 +3131,9 @@ body[dir="rtl"] .checkbox:checked,
 .z-20 {
   z-index: 20;
 }
+.z-50 {
+  z-index: 50;
+}
 .m-4 {
   margin: 1rem;
 }
