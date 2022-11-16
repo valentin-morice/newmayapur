@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded-xl bg-white p-8 shadow-lg mx-auto" style="width: 620px">
+    <div class="rounded-xl bg-white p-8 shadow-lg mx-auto max-w-md">
         <FirstStep
             v-if="int === 0"
             :form="form"
