@@ -20,7 +20,7 @@
             </div>
             <div class="flex justify-between text-xs mb-1">
                 <span class="uppercase text-gray-600 font-bold">Address</span>
-                <p>{{ form.values.member.address.address }}</p>
+                <p>{{ form.values.member.address.street }}</p>
             </div>
             <div class="flex justify-between text-xs mb-1">
                 <span class="uppercase text-gray-600 font-bold">ZIP</span>

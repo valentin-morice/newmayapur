@@ -1,37 +1,37 @@
 <template>
     <div>
-        <p class="pb-4">Contribution is <b>monthly</b>. Choose your amount:</p>
-        <div class="flex justify-between gap-2">
-            <PriceSelector v-for="amount in amounts" @click="setAmount(amount)"
-                           :class="form.values.member.subscription.amount === amount ? 'bg-blue-100 border-blue-400' : 'border-gray-300'"
-                           :amount="amount"
-                           :selectedAmount="form.values.member.subscription.amount"
-                           :currency="form.values.member.subscription.currency"/>
-        </div>
-        <select v-model="form.values.member.subscription.currency" class="select select-bordered w-full mt-5">
-            <option value="" disabled selected>Choose your currency</option>
-            <option value="EUR">EUR</option>
-            <option value="USD">USD</option>
-            <option value="AUD">AUD</option>
-            <option value="NZD">NZD</option>
-            <option value="INR">INR</option>
-            <option value="GBP">GBP</option>
-        </select>
-        <select v-model="form.values.member.subscription.payment_method" class="select select-bordered w-full mt-5">
+        <p class="px-4 py-2 bg-blue-100 rounded-[8px]">Contribution is <b>monthly</b>.</p>
+        <select v-model="form.values.member.subscription.payment_method" class="select select-bordered w-full mt-4">
             <option value="" disabled selected>Choose your payment method</option>
             <option value="stripe">Credit Card</option>
             <option value="gocardless">Direct Debit</option>
         </select>
+        <div class="flex justify-between mt-4 gap-2">
+            <div class="flex gap-2">
+                <select v-model="form.values.member.subscription.currency" class="select select-bordered">
+                    <option disabled selected>Currency</option>
+                    <option :value="{ currency: 'EUR', autoDecimalDigit: true, precision: 2 }">EUR</option>
+                    <option :value="{ currency: 'USD', autoDecimalDigit: true, precision: 2 }">USD</option>
+                    <option :value="{ currency: 'GBP', autoDecimalDigit: true, precision: 2 }">GBP</option>
+                </select>
+                <CurrencyInput
+                    :options="form.values.member.subscription.currency"
+                    class="input input-bordered w-full"
+                    placeholder="Amount"
+                    v-model="form.values.member.subscription.amount"
+                />
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import PriceSelector from "../UI/PriceSelector";
+import CurrencyInput from "../UI/CurrencyInput";
 
 export default {
     props: ['form', "errors"],
     components: {
-        PriceSelector
+        CurrencyInput
     },
     methods: {
         setAmount(amount) {
@@ -44,15 +44,8 @@ export default {
         }
     },
     watch: {
-        'form.values.member.subscription.currency'(value) {
-            if (value.length === '') {
-                this.errors.values.second.currency = 1;
-            } else {
-                delete this.errors.values.second.currency
-            }
-        },
         'form.values.member.subscription.amount'(value) {
-            if (value.length === '') {
+            if (value.length === '' || value < 3) {
                 this.errors.values.second.amount = 1;
             } else {
                 delete this.errors.values.second.amount

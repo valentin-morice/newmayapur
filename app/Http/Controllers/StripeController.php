@@ -93,20 +93,12 @@ class StripeController extends Controller
             'postal_code' => $result['member']['address']['postal_code'],
         ]);
 
-        $setPriceId = function ($amount) {
-            if ($amount === 16) {
-                return 'price_1M0L1pAO5frM15J3cTPJ3cq2';
-            } else if ($amount === 32) {
-                return 'price_1M0L2FAO5frM15J3fnVXGaNG';
-            } else if ($amount === 64) {
-                return 'price_1M0L2eAO5frM15J3112QQSbZ';
-            } else if ($amount === 108) {
-                return 'price_1M0L31AO5frM15J3NJ21bK2v';
-            }
-        };
-
-        $price_id = $setPriceId($result['member']['subscription']['amount']);
-
+        $price = $this->stripe->prices->create([
+            'unit_amount' => $result['member']['subscription']['amount'] * 100,
+            'currency' => $result['member']['subscription']['currency']['currency'],
+            'recurring' => ['interval' => 'month'],
+            'product' => 'prod_MoOEY71N6vhbKf',
+        ]);
 
         // Create the subscription. Note we're expanding the Subscription's
         // latest invoice and that invoice's payment_intent
@@ -114,9 +106,9 @@ class StripeController extends Controller
         $subscription = $this->stripe->subscriptions->create([
             'customer' => $customer_id,
             'items' => [[
-                'price' => $price_id,
+                'price' => $price->id,
             ]],
-            'currency' => $result['member']['subscription']['currency'],
+            'currency' => $price->currency,
             'payment_behavior' => 'default_incomplete',
             'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
             'expand' => ['latest_invoice.payment_intent'],

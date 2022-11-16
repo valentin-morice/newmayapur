@@ -9,7 +9,6 @@ export default function useFormErrors() {
             email: '',
         },
         second: {
-            currency: '',
             amount: '',
             payment_method: '',
         },
