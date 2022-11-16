@@ -38,7 +38,7 @@ class GoCardlessController extends Controller
         $name = $request->input('member.firstname') . ' ' . $request->input('member.lastname');
         $email = $request->input('member.email');
         $amount = $request->input('member.subscription.amount');
-        $currency = $request->input('member.subscription.currency');
+        $currency = $request->input('member.subscription.currency.currency');
 
         $billingRequest = $this->client->billingRequests()->create([
             "params" => [
