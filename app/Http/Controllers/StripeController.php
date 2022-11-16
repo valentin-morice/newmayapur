@@ -97,7 +97,7 @@ class StripeController extends Controller
             'unit_amount' => $result['member']['subscription']['amount'] * 100,
             'currency' => $result['member']['subscription']['currency']['currency'],
             'recurring' => ['interval' => 'month'],
-            'product' => 'prod_MoOEY71N6vhbKf',
+            'product' => getenv('STRIPE_PRODUCT_ID'),
         ]);
 
         // Create the subscription. Note we're expanding the Subscription's
