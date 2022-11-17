@@ -149,6 +149,13 @@ export default {
 </script>
 
 <style scoped>
+
+form {
+    width: 100%;
+    min-width: 365px;
+    align-self: center;
+}
+
 .hidden {
     display: none;
 }
@@ -268,8 +275,6 @@ button:disabled {
 
 @media only screen and (max-width: 600px) {
     form {
-        width: 95vw;
-        padding: 20px;
         min-width: initial;
     }
 }

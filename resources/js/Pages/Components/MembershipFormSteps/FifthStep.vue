@@ -1,5 +1,5 @@
 <template>
-    <form id="payment-form" @submit.prevent="onSubmit">
+    <form id="payment-form" class="w-100" @submit.prevent="onSubmit">
         <div id="payment-element">
             <!-- Elements will create form elements here -->
         </div>
@@ -80,3 +80,17 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+form {
+    width: 100%;
+    min-width: 365px;
+    align-self: center;
+}
+
+@media only screen and (max-width: 600px) {
+    form {
+        min-width: initial;
+    }
+}
+</style>
