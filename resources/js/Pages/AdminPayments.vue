@@ -1,11 +1,11 @@
 <template>
     <Admin>
         <h1 class="font-bold text-3xl text-gray-700 pt-3 px-6">All Payments</h1>
-        <div class="calculate rounded-2xl m-4 p-6 pb-5 shadow-lg bg-white">
+        <div class="calculate rounded-2xl m-4 p-6 pb-7 shadow-lg bg-white">
             <input v-model="search" type="text" placeholder="Search For Payments..."
                    class="mb-6 input input-bordered w-full max-w-xs"/>
             <div class="overflow-x-auto mb-8">
-                <table class="table table-fixed table-zebra w-full">
+                <table class="table lg:table-fixed table-zebra w-full">
                     <thead>
                     <tr>
                         <th>id</th>
