@@ -1,6 +1,6 @@
 <template>
     <Admin>
-        <div class="flex pt-3 px-6 items-baseline gap-6">
+        <div class="flex flex-col lg:flex-row pt-3 px-6 items-baseline gap-6">
             <h1 class="font-bold text-3xl text-gray-700">{{ member.name }}</h1>
             <div class="flex bg-white inline-block py-3 px-5 rounded-xl shadow-sm items-center">
                 <ion-icon name="mail-outline" class="text-2xl mr-2"></ion-icon>
@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="calculate rounded-2xl m-4 p-6 shadow-lg bg-white">
-            <div class="grid grid-cols-2 gap-x-8 gap-y-4">
+            <div class="grid grid-cols-1 w-[340px] md:w-[500px] lg:w-full lg:grid-cols-2 gap-x-8 gap-y-4">
                 <div>
                     <h2 class="font-bold text-xl text-gray-700">Subscription</h2>
                     <div class="bg-base-200 rounded my-4 p-4 space-y-2">
