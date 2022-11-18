@@ -13,8 +13,8 @@
                 <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi
                     exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
             </div>
-            <MembershipForm v-if="form === 'member'"/>
-            <DonationForm v-else-if="form === 'donation'"/>
+            <MembershipForm :csrf="csrf" v-if="form === 'member'"/>
+            <DonationForm :csrf="csrf" v-else-if="form === 'donation'"/>
         </div>
     </div>
 </template>
@@ -35,6 +35,8 @@ export default {
         return {
             form: 'member',
         }
-    }
+    },
+    props: ['csrf']
+
 }
 </script>

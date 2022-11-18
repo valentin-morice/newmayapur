@@ -5,6 +5,7 @@
             :form="form"
             :errors="errors"
             :stripe_data="stripe"
+            :csrf="csrf"
         />
         <SecondStep
             v-if="int === 1 && stripe.client_secret || stripe.error"
@@ -94,5 +95,6 @@ export default {
             }
         }
     },
+    props: ['csrf']
 }
 </script>

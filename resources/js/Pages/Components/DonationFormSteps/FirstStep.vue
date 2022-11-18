@@ -43,7 +43,7 @@ export default {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                'X-CSRF-TOKEN': this.csrf,
             },
             body: JSON.stringify(this.form)
         })
@@ -62,6 +62,6 @@ export default {
                 vm.stripe_data.error = true
             });
     },
-    props: ['form', 'errors', 'stripe_data']
+    props: ['form', 'errors', 'stripe_data', 'csrf']
 }
 </script>

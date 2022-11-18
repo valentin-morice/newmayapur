@@ -15,7 +15,9 @@ Route::get('/', function () {
 });
 
 Route::get('/donate', function () {
-    return Inertia::render('SubscriptionCreate');
+    return Inertia::render('SubscriptionCreate', [
+        'csrf' => csrf_token(),
+    ]);
 });
 
 // Auth Routes ----------------------

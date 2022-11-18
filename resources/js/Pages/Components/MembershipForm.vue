@@ -81,8 +81,8 @@ export default {
         },
     },
     mounted() {
-        this.form.values.utils.csrf = document.querySelector('meta[name="csrf-token"]')
-            .getAttribute('content')
-    }
+        this.form.values.utils.csrf = this.csrf
+    },
+    props: ['csrf']
 }
 </script>
