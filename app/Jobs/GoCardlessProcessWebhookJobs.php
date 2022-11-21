@@ -2,7 +2,9 @@
 
 namespace App\Jobs;
 
+use App\Models\BillingRequest;
 use App\Models\Members;
+use App\Models\ProcessedWebhooks;
 use App\Models\Subscriptions;
 use GoCardlessPro\Client;
 use GoCardlessPro\Environment;
@@ -17,11 +19,9 @@ class GoCardlessProcessWebhookJobs extends SpatieProcessWebhookJob
 
     public function handle()
     {
-        $webhook = Redis::exists($this->webhookCall->payload['meta']['webhook_id']);
-
-        if ($webhook) return;
-
-        Redis::set($this->webhookCall->payload['meta']['webhook_id'], '');
+        if (ProcessedWebhooks::where('webhook_id', $this->webhookCall->payload['meta']['webhook_id'])->exists()) {
+            return;
+        }
 
         $this->client = new Client(array(
             'access_token' => getenv('GC_ACCESS_TOKEN'),
@@ -39,27 +39,18 @@ class GoCardlessProcessWebhookJobs extends SpatieProcessWebhookJob
                     $this->process_subscriptions_events($event);
             }
         }
+
+        ProcessedWebhooks::create([
+            'webhook_id' => $this->webhookCall->payload['meta']['webhook_id']
+        ]);
     }
 
     public function process_billing_request_event($event)
     {
         switch ($event['action']) {
             case 'fulfilled':
-                $keys = Redis::keys('*');
-                $billingRequests = [];
-                foreach ($keys as $key) {
-                    $billingRequests[] = json_decode(Redis::get($key));
-                }
 
-                $request = null;
-
-                foreach ($billingRequests as $billingRequest) {
-                    if (isset($billingRequest->json)) {
-                        if ($billingRequest->json->api_response->body->billing_requests->id === $event['links']['billing_request']) {
-                            $request = $billingRequest;
-                        }
-                    }
-                }
+                $request = BillingRequest::where('gocardless_id', $event['links']['billing_request'])->first();
 
                 $mandate = $this->client->mandates()->list([
                     "params" => ["customer" => $event['links']['customer']
@@ -67,8 +58,8 @@ class GoCardlessProcessWebhookJobs extends SpatieProcessWebhookJob
 
                 $this->client->subscriptions()->create([
                     "params" => [
-                        "amount" => $request->amount,
-                        "currency" => $request->json->api_response->body->billing_requests->mandate_request->currency,
+                        "amount" => $request->amount * 100,
+                        "currency" => $request->currency,
                         "name" => "Membership",
                         "interval_unit" => "monthly",
                         "day_of_month" => 1,
@@ -86,10 +77,22 @@ class GoCardlessProcessWebhookJobs extends SpatieProcessWebhookJob
         switch ($event['action']) {
 
             case 'created':
+
                 $subscription = $this->client->subscriptions()->get($event['links']['subscription']);
                 $mandate_id = $subscription->links->mandate;
+                $customer_id = $this->client->mandates()->get($mandate_id)->links->customer;
+                $customer = $this->client->customers()->get($customer_id);
 
-                $member = Members::where('customer_id', $this->client->mandates()->get($mandate_id)->links->customer,)->first();
+                $member = Members::create([
+                    'name' => $customer->given_name . ' ' . $customer->family_name,
+                    'email' => $customer->email,
+                    'customer_id' => $customer->id,
+                    'city' => $customer->city,
+                    'address' => $customer->address_line1 . ' ' . $customer->address_line2,
+                    'country' => $customer->country_code,
+                    'state' => $customer->region,
+                    'postal_code' => $customer->postal_code,
+                ]);
 
                 Subscriptions::create([
                     'members_id' => $member->id,
@@ -99,18 +102,10 @@ class GoCardlessProcessWebhookJobs extends SpatieProcessWebhookJob
                     'payment_method' => 'gocardless',
                 ]);
 
-                $customer = $this->client->customers()->get($member->customer_id);
-
-                $member->update([
-                    'city' => $customer->city,
-                    'address' => $customer->address_line1 . ' ' . $customer->address_line2,
-                    'country' => $customer->country_code,
-                    'state' => $customer->region,
-                    'postal_code' => $customer->postal_code,
-                ]);
                 break;
 
             case 'cancelled':
+
                 $subscription = $this->client->subscriptions()->get($event['links']['subscription']);
 
                 $mandate_id = $subscription->links->mandate;
@@ -120,6 +115,7 @@ class GoCardlessProcessWebhookJobs extends SpatieProcessWebhookJob
                 $member->subscriptions()->first()->update([
                     'status' => $subscription->status,
                 ]);
+
                 break;
             default:
                 Log::info('A subscriptions webhook has been received.');

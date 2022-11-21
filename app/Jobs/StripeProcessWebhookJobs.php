@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Members;
 use App\Models\Payments;
+use App\Models\ProcessedWebhooks;
 use App\Models\Subscriptions;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
@@ -15,9 +16,9 @@ class StripeProcessWebhookJobs extends SpatieProcessWebhookJob
 
     public function handle()
     {
-        $webhook = Redis::exists($this->webhookCall->payload['id']);
-
-        if ($webhook) return;
+        if (ProcessedWebhooks::where('webhook_id', $this->webhookCall->payload['id'])->exists()) {
+            return;
+        }
 
         $event_type = $this->webhookCall->payload['type'];
 
@@ -27,7 +28,9 @@ class StripeProcessWebhookJobs extends SpatieProcessWebhookJob
             $this->process_payment_intent();
         }
 
-        Redis::set($this->webhookCall->payload['id'], '');
+        ProcessedWebhooks::create([
+            'webhook_id' => $this->webhookCall->payload['id']
+        ]);
     }
 
     private function process_payment_intent()

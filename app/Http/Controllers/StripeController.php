@@ -44,9 +44,6 @@ class StripeController extends Controller
         Stripe::setApiKey(getenv('STRIPE_SECRET_KEY'));
 
         try {
-
-            // Alternatively, set up a webhook to listen for the payment_intent.succeeded event
-            // and attach the PaymentMethod to a new Customer
             $customer = Customer::create([
                 'name' => $request->input('firstname') . ' ' . $request->input('lastname'),
                 'email' => $request->input('email'),
@@ -100,9 +97,6 @@ class StripeController extends Controller
             'product' => getenv('STRIPE_PRODUCT_ID'),
         ]);
 
-        // Create the subscription. Note we're expanding the Subscription's
-        // latest invoice and that invoice's payment_intent
-        // so we can pass it to the front end to confirm the payment
         $subscription = $this->stripe->subscriptions->create([
             'customer' => $customer_id,
             'items' => [[

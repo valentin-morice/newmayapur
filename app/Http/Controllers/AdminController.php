@@ -8,6 +8,7 @@ use App\Models\Subscriptions;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 
@@ -107,6 +108,7 @@ class AdminController extends Controller
 
         $new_cancels_members = $this->filter($new_cancels);
 
+        Cache::put('sub_total', $this->subscriptions()['total'], 43200);
 
         return Inertia::render('AdminOverview', [
             'new_members' => $new_members,
@@ -119,7 +121,7 @@ class AdminController extends Controller
             ],
             'members_loc' => $this->memberByLoc(),
             'subscriptions' => [
-                'total' => $this->subscriptions()['total'],
+                'total' => Cache::get('sub_total'),
                 'all' => $this->subscriptions()['all'],
             ]
         ]);
@@ -187,7 +189,7 @@ class AdminController extends Controller
         for ($i = 0; $i < count($groups); $i++) {
             $arr[] = [array_keys($groups)[$i] => array_sum($groups[array_keys($groups)[$i]])];
         }
-        
+
 //        Monthly Limit Reached -- Uncomment next month
 //
 //        $converted = [];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BillingRequest;
 use App\Models\Members;
 use GoCardlessPro\Client;
 use GoCardlessPro\Core\Exception\InvalidStateException;
@@ -48,19 +49,14 @@ class GoCardlessController extends Controller
             ]
         ]);
 
-        Members::create([
-            'name' => $name,
-            'email' => $email,
-            'customer_id' => $billingRequest->links->customer,
+        BillingRequest::create([
+            'gocardless_id' => $billingRequest->id,
+            'amount' => $amount,
+            'currency' => strtoupper($currency),
         ]);
 
-        Redis::set($billingRequest->links->customer,
-            json_encode(['json' => $billingRequest, 'amount' => $amount * 100]),
-            'EX',
-            86400
-        );
 
-        $redirect_url = "http://localhost/gocardless/success?" .
+        $redirect_url = url('/gocardless/success?') .
             "amount=" . $amount .
             '&name=' . $name .
             '&id=' . $billingRequest->id .
@@ -69,7 +65,7 @@ class GoCardlessController extends Controller
         $flow = $this->client->billingRequestFlows()->create([
             "params" => [
                 "redirect_uri" => $redirect_url,
-                "exit_uri" => "http://localhost/error",
+                "exit_uri" => url('/gocardless/error'),
                 "links" => [
                     "billing_request" => $billingRequest->id
                 ],
