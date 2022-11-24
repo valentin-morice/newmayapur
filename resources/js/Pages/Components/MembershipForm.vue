@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded-xl bg-white p-8 shadow-lg mx-auto !max-w-md">
+    <div class="rounded-xl bg-white p-8 shadow-lg mx-auto max-w-md md:w-[700px]">
         <SlideUpDown v-model="active" :duration="1000">
             <Component
                 :form="form"
@@ -8,13 +8,13 @@
                 :is="steps[int]"
             ></Component>
         </SlideUpDown>
-        <div v-if="form.values.utils.show_buttons !== false" class="flex w-100 justify-between gap-2">
+        <div v-if="form.values.utils.show_buttons !== false" class="grid grid-cols-2 gap-2">
             <button @click="previous" :class="int === 0 ? 'btn-disabled' : ''"
-                    class="btn w-32 md:w-44 btn-primary w-100 mt-6">
+                    class="btn btn-primary w-100 mt-6">
                 &#171; Previous
             </button>
             <button @click="next" :class="errors.values.server ? 'btn-disabled' : ''"
-                    class="btn w-32 md:w-44 btn-primary mt-6">
+                    class="btn w-100 btn-primary mt-6">
                 Next &#187;
             </button>
         </div>

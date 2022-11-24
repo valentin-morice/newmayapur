@@ -17,13 +17,13 @@
                     placeholder="Password"
                     type="password">
                 <p v-if="form.errors.password" class=" mt-1 text-sm text-red-500">{{ form.errors.password }}</p>
-                <div class="flex mt-6 mb-2 gap-2">
+                <div class="grid grid-cols-2 mt-6 mb-2 gap-2">
                     <Link
-                        class="bg-blue-500 text-center w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        class="btn w-full btn-secondary"
                         href="/">Go Back
                     </Link>
                     <button
-                        class="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        class="btn w-full btn-primary"
                         type="submit">Submit
                     </button>
                 </div>

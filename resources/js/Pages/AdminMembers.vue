@@ -10,7 +10,7 @@
                     <tr>
                         <th>id</th>
                         <th>Name</th>
-                        <th>Date</th>
+                        <th>Started</th>
                         <th>Amount</th>
                         <th>Status</th>
                     </tr>

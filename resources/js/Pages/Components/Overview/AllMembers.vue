@@ -1,9 +1,15 @@
 <template>
     <div class="rounded-2xl px-6 pt-3 pb-5 shadow-lg bg-white">
         <h2 class="font-bold text-xl text-gray-700">Members</h2>
-        <div class="p-2 my-4 flex bg-gray-100 rounded justify-between">
-            <span class="uppercase font-bold">Total</span>
-            <span>{{ total }}</span>
+        <div class="flex gap-2">
+            <div class="p-2 w-1/2 my-4 flex bg-gray-100 rounded justify-between">
+                <span class="uppercase font-bold">Active</span>
+                <span>{{ active }}</span>
+            </div>
+            <div class="p-2 w-1/2 my-4 flex bg-gray-100 rounded justify-between">
+                <span class="uppercase font-bold">Cancelled</span>
+                <span>{{ cancelled }}</span>
+            </div>
         </div>
         <div class="grid grid-cols-3 gap-2">
             <div v-for="members in members"
@@ -19,7 +25,7 @@
 import CountryFlag from "vue-country-flag-next";
 
 export default {
-    props: ['members', 'total'],
+    props: ['members', 'active', 'cancelled'],
     components: {
         CountryFlag
     }

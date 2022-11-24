@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\BillingRequest;
 use App\Models\Members;
+use App\Models\Payments;
 use App\Models\ProcessedWebhooks;
 use App\Models\Subscriptions;
 use GoCardlessPro\Client;
@@ -37,6 +38,9 @@ class GoCardlessProcessWebhookJobs extends SpatieProcessWebhookJob
                     break;
                 case "subscriptions":
                     $this->process_subscriptions_events($event);
+                    break;
+                case "payments":
+                    $this->process_payments_events($event);
             }
         }
 
@@ -121,6 +125,31 @@ class GoCardlessProcessWebhookJobs extends SpatieProcessWebhookJob
                 Log::info('A subscriptions webhook has been received.');
                 break;
         }
+    }
+
+    public function process_payments_events($event)
+    {
+        $payment = $this->client->payments()->get($event['links']['payment']);
+
+        if (Payments::where('payment_id', $event['links']['payment'])->exists()) {
+            Payments::where('payment_id', $event['links']['payment'])->first()->update([
+                'status' => $payment->status,
+            ]);
+
+            return;
+        }
+
+        $customer_id = $this->client->mandates()->get($payment->links->mandate)->links->customer;
+        $customer = $this->client->customers()->get($customer_id);
+
+        Payments::create([
+            'name' => $customer->given_name . ' ' . $customer->family_name,
+            'amount' => $payment->amount / 100,
+            'payment_id' => $payment->id,
+            'email' => $customer->email,
+            'status' => $payment->status,
+            'currency' => $payment->currency
+        ]);
     }
 }
 

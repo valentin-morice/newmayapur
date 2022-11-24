@@ -33,7 +33,7 @@ class AdminController extends Controller
                 ->when($request->input(['search']), function ($query, $search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 })
-                ->paginate(6)
+                ->paginate(10)
                 ->withQueryString()
                 ->through(fn($member) => [
                     'id' => $member->id,
@@ -55,7 +55,7 @@ class AdminController extends Controller
                 ->when($request->input(['search']), function ($query, $search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 })
-                ->paginate(6)
+                ->paginate(10)
                 ->withQueryString()
                 ->through(fn($payment) => [
                     'id' => $payment->id,
@@ -64,7 +64,7 @@ class AdminController extends Controller
                     'date' => Carbon::parse($payment->created_at)->format('d/m/Y'),
                     'amount' => $payment->amount,
                     'currency' => $payment->currency,
-                    'status' => ucfirst($payment->status),
+                    'status' => ucwords(str_replace('_', ' ', $payment->status)),
                 ]),
             'query' => $request->input(['search'])
         ]);
@@ -89,12 +89,17 @@ class AdminController extends Controller
                 'subscription' => [
                     'amount' => $member->subscriptions->first()->amount,
                     'currency' => $member->subscriptions->first()->currency,
-                    'status' => ucfirst($member->subscriptions->first()->status),
+                    'status' => ucwords(str_replace('_', ' ', $member->subscriptions->first()->status)),
                     'date' => Carbon::parse($member->created_at)->format('d/m/Y'),
                     'payment_method' => ucfirst($member->subscriptions->first()->payment_method),
                 ],
             ],
         ]);
+    }
+
+    public function export()
+    {
+        return Inertia::render('AdminExport');
     }
 
     public function overview()
@@ -117,7 +122,12 @@ class AdminController extends Controller
                 'value' => $this->percentage(Subscriptions::where('status', 'active')->get()->toArray(), Subscriptions::where('status', 'cancelled')->get()->toArray())
             ],
             'members' => [
-                'total' => Members::has('subscriptions')->count(),
+                'total_active' => Members::whereHas('subscriptions', function ($query) {
+                    $query->where('status', 'active');
+                })->count(),
+                'total_cancelled' => Members::whereHas('subscriptions', function ($query) {
+                    $query->where('status', 'cancelled');
+                })->count()
             ],
             'members_loc' => $this->memberByLoc(),
             'subscriptions' => [

@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 // UI Routes ------------------------
@@ -63,6 +64,8 @@ Route::get('/admin/members/{id}', [AdminController::class, 'show'])->where('id',
 
 Route::get('/admin/payments', [AdminController::class, 'index_payments'])->middleware(['auth']);
 
+Route::get('/admin/export', [AdminController::class, 'export'])->middleware(['auth']);
+
 Route::get('/test', function () {
-    return 'Test Route';
+    return Excel::download(new \App\Exports\PaymentsExport(), 'payments.xlsx');
 });

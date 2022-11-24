@@ -3,7 +3,7 @@
         <h1 class="font-bold text-3xl text-gray-700 pt-3 px-6">Membership Overview</h1>
         <div class="calculate grid grid-cols-1 md:grid-cols-2 m-4 gap-4">
             <div>
-                <AllMembers :members="members_loc" :total="members.total"/>
+                <AllMembers :members="members_loc" :cancelled="members.total_cancelled" :active="members.total_active"/>
                 <AllSubscriptions :subscriptions="subscriptions"/>
                 <ActiveMembers class="mt-4" :percentage="percentage"/>
             </div>
