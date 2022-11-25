@@ -12,9 +12,6 @@
                 <ul tabindex="0"
                     class="menu menu-compact dropdown-content space-y-1 mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                     <li>
-                        <Link href="/donate">Donate</Link>
-                    </li>
-                    <li>
                         <Link href="/login">Login</Link>
                     </li>
                 </ul>
@@ -24,9 +21,6 @@
         <div class="navbar-end">
             <div class="navbar-center hidden lg:flex">
                 <ul class="menu menu-horizontal p-0 space-x-2 ml-2">
-                    <li>
-                        <Link href="/donate">Donate</Link>
-                    </li>
                     <li v-if="!$page.props.isLogged">
                         <Link href="/login">Login</Link>
                     </li>

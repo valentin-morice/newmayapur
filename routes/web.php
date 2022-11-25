@@ -12,10 +12,6 @@ use Inertia\Inertia;
 // UI Routes ------------------------
 
 Route::get('/', function () {
-    return Inertia::render('Home');
-});
-
-Route::get('/donate', function () {
     return Inertia::render('SubscriptionCreate', [
         'csrf' => csrf_token(),
     ]);
