@@ -97,11 +97,6 @@ class AdminController extends Controller
         ]);
     }
 
-    public function export()
-    {
-        return Inertia::render('AdminExport');
-    }
-
     public function overview()
     {
 

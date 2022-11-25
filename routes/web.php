@@ -1,12 +1,12 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GoCardlessController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Maatwebsite\Excel\Facades\Excel;
 
 
 // UI Routes ------------------------
@@ -64,8 +64,6 @@ Route::get('/admin/members/{id}', [AdminController::class, 'show'])->where('id',
 
 Route::get('/admin/payments', [AdminController::class, 'index_payments'])->middleware(['auth']);
 
-Route::get('/admin/export', [AdminController::class, 'export'])->middleware(['auth']);
+Route::get('/admin/export', [ExportController::class, 'create'])->middleware(['auth']);
 
-Route::get('/test', function () {
-    return Excel::download(new \App\Exports\PaymentsExport(), 'payments.xlsx');
-});
+Route::get('/admin/export/store', [ExportController::class, 'store'])->middleware(['auth']);
