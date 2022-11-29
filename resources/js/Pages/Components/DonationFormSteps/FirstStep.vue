@@ -37,31 +37,33 @@ export default {
         CurrencyInput
     },
     beforeUnmount() {
-        const vm = this
-        fetch('/stripe/create-payment', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': this.csrf,
-            },
-            body: JSON.stringify(this.form)
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error();
+        if (Object.keys(this.errors).length === 0) {
+            const vm = this
+            fetch('/stripe/create-payment', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': this.csrf,
+                },
+                body: JSON.stringify(this.form)
             })
-            .then((data) => {
-                    vm.stripe_data.client_secret = data.client_secret
-                    vm.stripe_data.stripe_pk = data.stripe_pk
-                }
-            )
-            .catch(function () {
-                vm.stripe_data.error = true
-            });
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw new Error();
+                })
+                .then((data) => {
+                        vm.stripe_data.client_secret = data.client_secret
+                        vm.stripe_data.stripe_pk = data.stripe_pk
+                    }
+                )
+                .catch(function () {
+                    vm.stripe_data.error = true
+                });
+        }
     },
-    props: ['form', 'errors', 'stripe_data', 'csrf']
+    props: ['form', 'errors', 'stripe_data', 'csrf'],
 }
 </script>

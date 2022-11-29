@@ -55,8 +55,11 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-primary">View in {{ member.subscription.payment_method }}</button>
+                <a :href="url + member.customer_id" class="btn btn-primary" target="_blank">View in
+                    {{ member.subscription.payment_method }}
+                </a>
                 <Link
+                    v-if="member.subscription.payment_method !== 'Paypal' && member.subscription.payment_method !== 'Banque Postale'"
                     :class="member.subscription.status !== 'Cancelled' ? 'bg-red-600 hover:bg-red-600' : 'btn-disabled'"
                     class="btn border-0" method="put" :data="{object: 'cancel'}" as="button"
                     :href="'/' + member.subscription.payment_method.toLowerCase() + '/' + member.id">
@@ -78,7 +81,7 @@ export default {
         Admin,
         Link,
     },
-    props: ['member'],
+    props: ['member', 'url'],
     methods: {
         getCurrency(code) {
             return getSymbolFromCurrency(code);

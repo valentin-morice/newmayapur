@@ -1,7 +1,7 @@
 <template>
-    <div class="bg-base-200 h-screen px-2 lg:px-0 py-8">
+    <div class="bg-base-200 h-[750px] px-2 lg:px-0 py-8">
         <div
-            class="bg-white shadow-lg md:w-2/3 lg:w-1/3 mx-auto p-4 rounded-xl"
+            class="bg-white shadow-lg max-w-md md:w-[600px] mx-auto p-4 rounded-xl"
         >
             <ion-icon
                 class="mx-auto block py-2 text-6xl text-gray-700"

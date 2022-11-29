@@ -33,7 +33,8 @@ class AdminController extends Controller
                 ->when($request->input(['search']), function ($query, $search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 })
-                ->paginate(10)
+                ->orderBy('created_at', 'desc')
+                ->paginate(12)
                 ->withQueryString()
                 ->through(fn($member) => [
                     'id' => $member->id,
@@ -55,7 +56,8 @@ class AdminController extends Controller
                 ->when($request->input(['search']), function ($query, $search) {
                     $query->where('name', 'like', '%' . $search . '%');
                 })
-                ->paginate(10)
+                ->orderBy('created_at', 'desc')
+                ->paginate(12)
                 ->withQueryString()
                 ->through(fn($payment) => [
                     'id' => $payment->id,
@@ -74,11 +76,27 @@ class AdminController extends Controller
     {
         $member = Members::where('id', $id)->first();
 
+        function get_url($method)
+        {
+            if ($method === 'stripe') {
+                return getenv('STRIPE_URL');
+            } else if ($method === 'gocardless') {
+                return getenv('GC_URL');
+            } else if ($method === 'wise') {
+                return 'https://wise.com/';
+            } else if ($method === 'banque_postale') {
+                return 'https://www.labanquepostale.fr/associations.html';
+            } else if ($method === 'paypal') {
+                return getenv('PAYPAL_URL');
+            }
+        }
+
         return Inertia::render('AdminShow', [
             'member' => [
                 'id' => $id,
                 'name' => $member->name,
                 'email' => $member->email,
+                'customer_id' => $member->customer_id,
                 'address' => [
                     'city' => $member->city,
                     'country' => $member->country,
@@ -91,9 +109,10 @@ class AdminController extends Controller
                     'currency' => $member->subscriptions->first()->currency,
                     'status' => ucwords(str_replace('_', ' ', $member->subscriptions->first()->status)),
                     'date' => Carbon::parse($member->created_at)->format('d/m/Y'),
-                    'payment_method' => ucfirst($member->subscriptions->first()->payment_method),
+                    'payment_method' => ucwords(str_replace('_', ' ', $member->subscriptions->first()->payment_method)),
                 ],
             ],
+            'url' => get_url($member->subscriptions->first()->payment_method),
         ]);
     }
 

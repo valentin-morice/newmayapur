@@ -14,7 +14,9 @@
         <div class="grid grid-cols-3 gap-2">
             <div v-for="members in members"
                  class="rounded-xl px-5 py-2 flex items-center bg-gray-100 justify-between">
-                <CountryFlag :country='Object.keys(members)[0]' :rounded="true" size='normal'/>
+                <CountryFlag v-if="Object.keys(members)[0] !== ''" :country='Object.keys(members)[0]' :rounded="true"
+                             size='normal'/>
+                <p v-else class="uppercase font-bold">Unknown</p>
                 <p>{{ Object.values(members)[0] }}</p>
             </div>
         </div>
