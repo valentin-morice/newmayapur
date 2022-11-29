@@ -48,8 +48,7 @@ class StripeController extends Controller
                 'name' => $request->input('firstname') . ' ' . $request->input('lastname'),
                 'email' => $request->input('email'),
             ]);
-
-            // Create a PaymentIntent with amount and currency
+            
             $paymentIntent = PaymentIntent::create([
                 'amount' => $request->input('payment.amount') * 100,
                 'customer' => $customer->id,

@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded-xl bg-white p-8 shadow-lg mx-auto max-w-md md:w-[700px]">
+    <div class="rounded-xl bg-white p-8 shadow-lg mx-auto max-w-md md:w-[755px]">
         <SlideUpDown v-model="active" :duration="1000">
             <Component
                 :form="form"

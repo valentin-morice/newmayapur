@@ -10,8 +10,14 @@
             <div class="text-center lg:text-left lg:ml-8">
                 <h1 v-if="form === 'member'" class="text-5xl font-bold">Become a Member</h1>
                 <h1 v-else class="text-5xl font-bold">Make a Single Donation</h1>
-                <p class="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi
-                    exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
+                <p v-if="form === 'member'" class="py-6">
+                    Members are the core support of ISKCON New Mayapur. By becoming
+                    a member, you are contributing to the steady growth of New Mayapur's activities and community.
+                </p>
+                <p v-else class="py-6">
+                    Make a one-off donation now. Single donations are a great way for you to help, in your own terms and
+                    at your own pace.
+                </p>
             </div>
             <MembershipForm :csrf="csrf" v-if="form === 'member'"/>
             <DonationForm :csrf="csrf" v-else-if="form === 'donation'"/>

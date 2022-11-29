@@ -32,7 +32,7 @@ export default {
             return this.stripe.elements({clientSecret: this.stripe_data.client_secret});
         },
     },
-    props: ["stripe_data"],
+    props: ["stripe_data", "email"],
     mounted() {
         let vm = this;
 
@@ -110,6 +110,7 @@ export default {
         },
         submit() {
             const vm = this;
+            const email = this.email
 
             async function handleSubmit() {
                 vm.setLoading(true);
@@ -123,7 +124,8 @@ export default {
                             "//" +
                             window.location.host +
                             "/" +
-                            "stripe/success"
+                            "stripe/success",
+                        receipt_email: email,
                     },
                 });
                 // This point will only be reached if there is an immediate error when

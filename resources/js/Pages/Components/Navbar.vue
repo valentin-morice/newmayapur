@@ -9,23 +9,8 @@
                               d="M4 6h16M4 12h8m-8 6h16"/>
                     </svg>
                 </label>
-                <ul tabindex="0"
-                    class="menu menu-compact dropdown-content space-y-1 mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                    <li>
-                        <Link href="/login">Login</Link>
-                    </li>
-                </ul>
             </div>
-            <Link href="/" class="btn btn-ghost normal-case text-xl">daisyUI</Link>
-        </div>
-        <div class="navbar-end">
-            <div class="navbar-center hidden lg:flex">
-                <ul class="menu menu-horizontal p-0 space-x-2 ml-2">
-                    <li v-if="!$page.props.isLogged">
-                        <Link href="/login">Login</Link>
-                    </li>
-                </ul>
-            </div>
+            <Link href="/" class="btn btn-ghost normal-case text-xl">New Mayapur</Link>
         </div>
     </div>
 </template>

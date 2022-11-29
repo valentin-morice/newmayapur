@@ -9,7 +9,7 @@
         />
         <SecondStep
             v-if="int === 1 && stripe.client_secret || stripe.error"
-            :stripe_data="stripe"
+            :stripe_data="stripe" :email="form.email"
         />
         <button
             class="btn w-full flex items-center btn-primary mt-6"

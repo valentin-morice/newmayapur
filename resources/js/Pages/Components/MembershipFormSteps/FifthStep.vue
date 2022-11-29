@@ -52,6 +52,7 @@ export default {
     methods: {
         async onSubmit() {
             const elements = this.elements;
+            const email = this.form.member.email
             const {error} = await this.stripe.confirmPayment({
                 //`Elements` instance that was used to create the Payment Element
                 elements,
@@ -60,7 +61,8 @@ export default {
                         "//" +
                         window.location.host +
                         "/" +
-                        "stripe/success"
+                        "stripe/success",
+                    receipt_email: email
                 }
             });
 
