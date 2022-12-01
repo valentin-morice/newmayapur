@@ -27,7 +27,7 @@ export default {
     data() {
         return {
             stripe: Stripe(
-                'pk_test_51LsLVoAO5frM15J38vP7ax4MnkTyatkumwUOv6c78iuDX5YovXf16N6gOKiw5fWXFPMymcJlIz6y1QCW5DfhBarp00oqp5qF8s'
+                'pk_live_51Hhyh0BaqalmgsW81p7opcUyBlqX3TVwAB15enVc7r9O3QbYhTSvsqV3lRfZbAGNh1J5IXKnPz24PtzYC802hJ7r00ANQtMzTi'
             ),
             error: false,
             clicked: false,
@@ -42,6 +42,9 @@ export default {
                 clientSecret: this.form.values.member.subscription.client_secret,
                 appearance: {}
             })
+        },
+        email() {
+            return this.form.values.member.email
         }
     },
     mounted() {
@@ -52,7 +55,7 @@ export default {
     methods: {
         async onSubmit() {
             const elements = this.elements;
-            const email = this.form.member.email
+            const email = this.email;
             const {error} = await this.stripe.confirmPayment({
                 //`Elements` instance that was used to create the Payment Element
                 elements,

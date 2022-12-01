@@ -9,10 +9,11 @@
         <div class="flex justify-between mt-4 gap-2">
             <div class="flex gap-2">
                 <select v-model="form.values.member.subscription.currency" class="select select-bordered">
-                    <option disabled selected>Currency</option>
-                    <option :value="{ currency: 'EUR' }">EUR</option>
-                    <option :value="{ currency: 'USD' }">USD</option>
-                    <option :value="{ currency: 'GBP' }">GBP</option>
+                    <option value="null" disabled selected>Currency</option>
+                    <option :value="'EUR'">EUR</option>
+                    <option :value="'AUD'">AUD</option>
+                    <option :value="'GBP'">GBP</option>
+                    <option :value="'NZD'">NZD</option>
                 </select>
                 <input type="text" v-model="form.values.member.subscription.amount"
                        :class="errors.values.second.amount ? 'bg-red-200 placeholder-red-600' : ''"
@@ -28,7 +29,8 @@ export default {
     props: ['form', "errors"],
     watch: {
         'form.values.member.subscription.amount'(value) {
-            if (value.length === null || value < 3 || value.includes(',')) {
+            const BIRTHNUMBER_ALLOWED_CHARS_REGEXP = /[0-9\.]+/
+            if (value.length === null || value < 3 || value.includes(',') || !BIRTHNUMBER_ALLOWED_CHARS_REGEXP.test(value)) {
                 this.errors.values.second.amount = 'Enter a Valid Amount';
             } else {
                 delete this.errors.values.second.amount

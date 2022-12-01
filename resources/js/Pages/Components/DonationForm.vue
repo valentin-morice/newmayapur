@@ -33,7 +33,7 @@ export default {
                 lastname: '',
                 email: '',
                 payment: {
-                    currency: {currency: 'EUR', autoDecimalDigit: true, precision: 2},
+                    currency: null,
                     amount: null,
                 }
             },
@@ -88,12 +88,13 @@ export default {
             }
         },
         'form.payment.amount'(value) {
-            if (value.length === 0) {
-                this.errors.amount = 1
+            const BIRTHNUMBER_ALLOWED_CHARS_REGEXP = /[0-9\.]+/
+            if (value.length === null || value < 3 || value.includes(',') || !BIRTHNUMBER_ALLOWED_CHARS_REGEXP.test(value)) {
+                this.errors.amount = 'Enter a Valid Amount';
             } else {
                 delete this.errors.amount
             }
-        }
+        },
     },
     props: ['csrf']
 }

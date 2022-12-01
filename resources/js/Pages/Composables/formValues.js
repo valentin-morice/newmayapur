@@ -18,7 +18,7 @@ export default function useForm() {
                 client_secret: '',
                 price: '',
                 amount: null,
-                currency: {currency: 'EUR', autoDecimalDigit: true, precision: 2},
+                currency: null,
                 payment_method: '',
             }
         },

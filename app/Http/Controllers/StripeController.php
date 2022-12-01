@@ -48,12 +48,12 @@ class StripeController extends Controller
                 'name' => $request->input('firstname') . ' ' . $request->input('lastname'),
                 'email' => $request->input('email'),
             ]);
-            
+
             $paymentIntent = PaymentIntent::create([
                 'amount' => $request->input('payment.amount') * 100,
                 'customer' => $customer->id,
                 'setup_future_usage' => 'off_session',
-                'currency' => strtolower($request->input('payment.currency.currency')),
+                'currency' => strtolower($request->input('payment.currency')),
                 'automatic_payment_methods' => [
                     'enabled' => true,
                 ],
@@ -66,9 +66,7 @@ class StripeController extends Controller
                 ]
             );
         } catch (Error $e) {
-            return response('', 500)->json(['error' => $e->getMessage()]);
-        } catch (ApiErrorException $e) {
-            return response('', 500)->json(['error' => $e->getMessage()]);
+            return response('', 500)->json(['error' => $e]);
         }
     }
 
@@ -91,7 +89,7 @@ class StripeController extends Controller
 
         $price = $this->stripe->prices->create([
             'unit_amount' => $result['member']['subscription']['amount'] * 100,
-            'currency' => $result['member']['subscription']['currency']['currency'],
+            'currency' => $result['member']['subscription']['currency'],
             'recurring' => ['interval' => 'month'],
             'product' => getenv('STRIPE_PRODUCT_ID'),
         ]);

@@ -2,17 +2,17 @@
     <form class="mb-1">
         <div class="flex gap-2">
             <select v-model="form.payment.currency" class="select select-bordered">
-                <option disabled selected>Currency</option>
-                <option :value="{ currency: 'EUR', autoDecimalDigit: true, precision: 2 }">EUR</option>
-                <option :value="{ currency: 'USD', autoDecimalDigit: true, precision: 2 }">USD</option>
-                <option :value="{ currency: 'GBP', autoDecimalDigit: true, precision: 2 }">GBP</option>
+                <option value="null" disabled selected>Currency</option>
+                <option :value="'EUR'">EUR</option>
+                <option :value="'AUD'">AUD</option>
+                <option :value="'GBP'">GBP</option>
+                <option :value="'INR'">INR</option>
+                <option :value="'NZD'">NZD</option>
             </select>
-            <CurrencyInput
-                :options="form.payment.currency"
-                class="input input-bordered w-full"
-                placeholder="Amount"
-                v-model="form.payment.amount"
-            />
+            <input type="text" v-model="form.payment.amount"
+                   :class="errors.amount ? 'bg-red-200 placeholder-red-600' : ''"
+                   :placeholder="errors.amount ? errors.amount : 'Amount'"
+                   class="input input-bordered w-full max-w-xs">
         </div>
         <input type="text" v-model="form.firstname"
                :class="errors.firstname ? 'bg-red-200 placeholder-red-600' : ''"
@@ -30,12 +30,8 @@
 </template>
 
 <script>
-import CurrencyInput from "../UI/CurrencyInput";
 
 export default {
-    components: {
-        CurrencyInput
-    },
     beforeUnmount() {
         if (Object.keys(this.errors).length === 0) {
             const vm = this
