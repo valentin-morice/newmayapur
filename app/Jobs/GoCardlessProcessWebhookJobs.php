@@ -26,7 +26,7 @@ class GoCardlessProcessWebhookJobs extends SpatieProcessWebhookJob
 
         $this->client = new Client(array(
             'access_token' => getenv('GC_ACCESS_TOKEN'),
-            'environment' => Environment::SANDBOX
+            'environment' => Environment::LIVE
         ));
 
         $events = $this->webhookCall->payload['events'];
