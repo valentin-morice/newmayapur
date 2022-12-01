@@ -10,44 +10,26 @@
             <div class="flex gap-2">
                 <select v-model="form.values.member.subscription.currency" class="select select-bordered">
                     <option disabled selected>Currency</option>
-                    <option :value="{ currency: 'EUR', autoDecimalDigit: true, precision: 2 }">EUR</option>
-                    <option :value="{ currency: 'AUD', autoDecimalDigit: true, precision: 2 }">AUD</option>
-                    <option :value="{ currency: 'NZD', autoDecimalDigit: true, precision: 2 }">NZD</option>
-                    <option :value="{ currency: 'GBP', autoDecimalDigit: true, precision: 2 }">GBP</option>
+                    <option :value="{ currency: 'EUR' }">EUR</option>
+                    <option :value="{ currency: 'USD' }">USD</option>
+                    <option :value="{ currency: 'GBP' }">GBP</option>
                 </select>
-                <CurrencyInput
-                    :options="form.values.member.subscription.currency"
-                    class="input input-bordered w-full"
-                    placeholder="Amount"
-                    v-model="form.values.member.subscription.amount"
-                />
+                <input type="text" v-model="form.values.member.subscription.amount"
+                       :class="errors.values.second.amount ? 'bg-red-200 placeholder-red-600' : ''"
+                       :placeholder="errors.values.second.amount ? errors.values.second.amount : 'Amount'"
+                       class="input input-bordered w-full max-w-xs">
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import CurrencyInput from "../UI/CurrencyInput";
-
 export default {
     props: ['form', "errors"],
-    components: {
-        CurrencyInput
-    },
-    methods: {
-        setAmount(amount) {
-            this.form.values.member.subscription.amount = amount
-        }
-    },
-    data() {
-        return {
-            amounts: [16, 32, 64, 108]
-        }
-    },
     watch: {
         'form.values.member.subscription.amount'(value) {
-            if (value.length === '' || value < 3) {
-                this.errors.values.second.amount = 1;
+            if (value.length === null || value < 3 || value.includes(',')) {
+                this.errors.values.second.amount = 'Enter a Valid Amount';
             } else {
                 delete this.errors.values.second.amount
             }

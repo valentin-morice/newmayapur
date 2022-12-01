@@ -8,7 +8,6 @@ use GoCardlessPro\Client;
 use GoCardlessPro\Core\Exception\InvalidStateException;
 use GoCardlessPro\Environment;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
 use Inertia\Inertia;
 
 class GoCardlessController extends Controller
@@ -72,7 +71,7 @@ class GoCardlessController extends Controller
                 "prefilled_customer" => [
                     "given_name" => $request->input('member.firstname'),
                     "family_name" => $request->input('member.lastname'),
-                    "email" => $request->input('member.email'),
+                    "email" => $email,
                 ],
                 "lock_currency" => true,
             ]
