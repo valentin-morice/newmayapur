@@ -27,7 +27,7 @@ export default {
     data() {
         return {
             stripe: Stripe(
-                'pk_live_51Hhyh0BaqalmgsW81p7opcUyBlqX3TVwAB15enVc7r9O3QbYhTSvsqV3lRfZbAGNh1J5IXKnPz24PtzYC802hJ7r00ANQtMzTi'
+                'pk_test_51LsLVoAO5frM15J38vP7ax4MnkTyatkumwUOv6c78iuDX5YovXf16N6gOKiw5fWXFPMymcJlIz6y1QCW5DfhBarp00oqp5qF8s'
             ),
             error: false,
             clicked: false,
