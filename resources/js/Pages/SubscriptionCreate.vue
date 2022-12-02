@@ -8,7 +8,11 @@
         </div>
         <div class="lg:px-16 px-2 hero-content flex-col lg:flex-row-reverse">
             <div class="text-center lg:text-left lg:ml-8">
-                <h1 v-if="form === 'member'" class="text-5xl font-bold">Become a Member</h1>
+                <div v-if="form === 'member'">
+                    <span
+                        class="uppercase font-bold text-white shadow-md bg-secondary rounded-[6px] px-3 py-1.5 ml-0.5">Donate Monthly</span>
+                    <h1 class="text-5xl pt-5 font-bold">Become a Member</h1>
+                </div>
                 <h1 v-else class="text-5xl font-bold">Make a Single Donation</h1>
                 <p v-if="form === 'member'" class="py-6">
                     Members are the core support of ISKCON New Mayapur. By becoming
