@@ -67,7 +67,7 @@ class StripeProcessWebhookJobs extends SpatieProcessWebhookJob
 
         switch ($event_type) {
             case 'customer.subscription.created':
-                $subscription = Subscriptions::create([
+                Subscriptions::create([
                     'members_id' => $member->id,
                     'amount' => $this->webhookCall->payload['data']['object']['plan']['amount'] / 100,
                     'currency' => strtoupper($this->webhookCall->payload['data']['object']['plan']['currency']),
@@ -76,12 +76,14 @@ class StripeProcessWebhookJobs extends SpatieProcessWebhookJob
                 ]);
                 break;
             case 'customer.subscription.updated':
-                $member->subscriptions->first->update([
-                    'status' => $this->webhookCall->payload['data']['object']['status'],
-                ]);
+                if ($member->subscriptions->first()->status !== 'succeeded') {
+                    $member->subscriptions->first()->update([
+                        'status' => $this->webhookCall->payload['data']['object']['status'],
+                    ]);
+                }
                 break;
             case 'customer.subscription.deleted':
-                $member->subscriptions->first->update([
+                $member->subscriptions->first()->update([
                     'status' => 'cancelled',
                 ]);
                 break;
