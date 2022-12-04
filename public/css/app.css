@@ -3472,11 +3472,8 @@ body[dir="rtl"] .checkbox:checked,
 .pb-7 {
   padding-bottom: 1.75rem;
 }
-.pt-5 {
-  padding-top: 1.25rem;
-}
-.pb-6 {
-  padding-bottom: 1.5rem;
+.pt-6 {
+  padding-top: 1.5rem;
 }
 .pt-8 {
   padding-top: 2rem;
@@ -3487,20 +3484,17 @@ body[dir="rtl"] .checkbox:checked,
 .pb-3 {
   padding-bottom: 0.75rem;
 }
+.pt-5 {
+  padding-top: 1.25rem;
+}
 .pt-\[3\.6rem\] {
   padding-top: 3.6rem;
 }
+.pb-6 {
+  padding-bottom: 1.5rem;
+}
 .pb-5 {
   padding-bottom: 1.25rem;
-}
-.pt-6 {
-  padding-top: 1.5rem;
-}
-.pb-8 {
-  padding-bottom: 2rem;
-}
-.pt-4 {
-  padding-top: 1rem;
 }
 .text-center {
   text-align: center;

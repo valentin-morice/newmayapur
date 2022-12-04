@@ -6,12 +6,12 @@
         <div>
             <span class="footer-title">Navigation</span>
             <div class="grid text-base grid-flow-row gap-4">
-                <a>Home</a>
-                <a>About</a>
-                <a>Visit</a>
-                <a>Booking</a>
-                <a>Shop</a>
-                <a>Support Us</a>
+                <a href="https://newmayapur.com">Home</a>
+                <a href="https://newmayapur.com/about">About</a>
+                <a href="https://newmayapur.com/visit">Visit</a>
+                <a href="https://newmayapur.com/booking">Booking</a>
+                <a href="https://shop.newmayapur.com">Shop</a>
+                <a href="https://donations.newmayapur.com">Support Us</a>
             </div>
         </div>
         <div>
@@ -24,8 +24,8 @@
         <div>
             <span class="footer-title">More</span>
             <div class="grid text-base grid-flow-row gap-4">
-                <p>Le Gopal</p>
-                <p>New Bahulavan</p>
+                <a href="https://legopal.fr/">Le Gopal</a>
+                <a href="https://newbahulavan.fr">New Bahulavan</a>
             </div>
         </div>
     </footer>
