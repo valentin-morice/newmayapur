@@ -10,7 +10,7 @@
                 </select>
                 <p v-if="error.object" class="text-sm text-red-500 ml-0.5">{{ error.object }}</p>
                 <div v-if="form.object" class="pt-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pb-7">
                         <Datepicker v-model="form.date.start" placeholder="Start Date"/>
                         <Datepicker v-model="form.date.end" placeholder="End Date"/>
                     </div>
@@ -39,7 +39,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-8" :class="form.object ? 'pt-8' : 'pt-6'">
                     <button @click="submit('filtered')" class="btn w-full btn-secondary">Export Filtered
                     </button>
                     <button @click="submit('all')" class="btn w-full btn-primary">Export All</button>
@@ -52,7 +52,6 @@
 <script>
 import Admin from "./Layout/Admin";
 import Datepicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
 
 export default {
     components: {
@@ -125,3 +124,9 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+$dp__border_radius: 8px !default;
+$dp__input_padding: 10px 12px !default;
+@import "node_modules/@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss";
+</style>
