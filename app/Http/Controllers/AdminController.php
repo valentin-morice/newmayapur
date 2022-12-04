@@ -43,7 +43,7 @@ class AdminController extends Controller
                     'date' => Carbon::parse($member->created_at)->format('d/m/Y'),
                     'amount' => $member->subscriptions->first()->amount,
                     'currency' => strtoupper($member->subscriptions->first()->currency),
-                    'status' => ucfirst($member->subscriptions->first()->status),
+                    'status' => ucwords(str_replace('_', ' ', $member->subscriptions->first()->status)),
                 ]),
             'query' => $request->input(['search'])
         ]);
