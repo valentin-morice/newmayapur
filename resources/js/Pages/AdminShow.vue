@@ -55,7 +55,7 @@
                         </div>
                     </div>
                 </div>
-                <a :href="url + member.customer_id" class="btn btn-primary" target="_blank">View in
+                <a :href="url + '/' + member.customer_id" class="btn btn-primary" target="_blank">View in
                     {{ member.subscription.payment_method }}
                 </a>
                 <Link
