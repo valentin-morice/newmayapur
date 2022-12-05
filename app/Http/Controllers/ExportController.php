@@ -15,7 +15,7 @@ class ExportController extends Controller
 {
     public function create()
     {
-        return Inertia::render('AdminExport', [
+        return Inertia::render('AdminTools', [
             'currencies_payments' => Payments::pluck('currency')->unique(),
             'currencies_members' => Subscriptions::pluck('currency')->unique(),
             'payment_status' => Payments::pluck('status')->unique(),
@@ -39,7 +39,7 @@ class ExportController extends Controller
             if ($request->input('object') === 'payments') {
                 return Excel::download(new PaymentsExport($date_start, $date_end, $request->input('currency'), $request->input('status')), 'payments_filtered.xlsx');
             } else {
-                return Excel::download(new MembersExport($date_start, $date_end, $request->input('currency'), $request->input('status')), 'export.xlsx');
+                return Excel::download(new MembersExport($date_start, $date_end, $request->input('currency'), $request->input('status')), 'members_filtered.xlsx');
             }
         }
     }

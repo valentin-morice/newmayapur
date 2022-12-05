@@ -34,7 +34,5 @@ export default {
     },
     props: ['new_members', 'new_cancels', 'percentage', 'members', 'members_loc', 'subscriptions']
 }
-
-// RtOHsbo5HIX07vK9ARd52PYTLdO3ciRB
 </script>
 

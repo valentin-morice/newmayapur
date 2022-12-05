@@ -22,7 +22,7 @@
                     <Link href="/admin/payments">All Payments</Link>
                 </li>
                 <li :class="url.includes('export') ? 'bg-base-200 rounded-[8px]' : ''">
-                    <Link href="/admin/export">Export</Link>
+                    <Link href="/admin/export">Tools</Link>
                 </li>
                 <li>
                     <Link href="/" class="btn btn-primary mt-6 text-white w-100">

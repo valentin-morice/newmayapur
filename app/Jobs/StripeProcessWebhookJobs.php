@@ -42,9 +42,10 @@ class StripeProcessWebhookJobs extends SpatieProcessWebhookJob
         $payment = Payments::where('payment_id', $this->webhookCall->payload['data']['object']['id'])->exists();
 
         if ($payment) {
-            Payments::where('payment_id', $this->webhookCall->payload['data']['object']['id'])->first()->update([
-                'status' => $this->webhookCall->payload['data']['object']['status']
-            ]);
+            if (Payments::where('payment_id', $this->webhookCall->payload['data']['object']['id'])->first()->status !== "succeeded")
+                Payments::where('payment_id', $this->webhookCall->payload['data']['object']['id'])->first()->update([
+                    'status' => $this->webhookCall->payload['data']['object']['status']
+                ]);
 
             return;
         }
@@ -76,7 +77,7 @@ class StripeProcessWebhookJobs extends SpatieProcessWebhookJob
                 ]);
                 break;
             case 'customer.subscription.updated':
-                if ($member->subscriptions->first()->status !== 'succeeded') {
+                if ($member->subscriptions->first()->exists() && $member->subscriptions->first()->status !== 'succeeded') {
                     $member->subscriptions->first()->update([
                         'status' => $this->webhookCall->payload['data']['object']['status'],
                     ]);

@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GoCardlessController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OfflineController;
 use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -63,3 +64,7 @@ Route::get('/admin/payments', [AdminController::class, 'index_payments'])->middl
 Route::get('/admin/export', [ExportController::class, 'create'])->middleware(['auth']);
 
 Route::get('/admin/export/store', [ExportController::class, 'store'])->middleware(['auth']);
+
+// Offline Routes -----------------------------
+
+Route::post('/offline/create', [OfflineController::class, 'create'])->middleware(['auth']);
