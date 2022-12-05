@@ -77,10 +77,12 @@ class StripeProcessWebhookJobs extends SpatieProcessWebhookJob
                 ]);
                 break;
             case 'customer.subscription.updated':
-                if ($member->subscriptions->first()->exists() && $member->subscriptions->first()->status !== 'succeeded') {
-                    $member->subscriptions->first()->update([
-                        'status' => $this->webhookCall->payload['data']['object']['status'],
-                    ]);
+                if (isset($member)) {
+                    if ($member->subscriptions->first()->status !== 'succeeded') {
+                        $member->subscriptions->first()->update([
+                            'status' => $this->webhookCall->payload['data']['object']['status'],
+                        ]);
+                    }
                 }
                 break;
             case 'customer.subscription.deleted':
