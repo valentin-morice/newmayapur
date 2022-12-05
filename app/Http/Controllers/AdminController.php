@@ -182,8 +182,8 @@ class AdminController extends Controller
     private function new_movements($status)
     {
         return Subscriptions::where('status', $status)
-            ->take(3)
-            ->orderBy('created_at', 'DESC')
+            ->take(5)
+            ->orderBy('updated_at', 'DESC')
             ->get();
     }
 
