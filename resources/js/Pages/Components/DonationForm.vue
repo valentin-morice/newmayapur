@@ -44,6 +44,7 @@ export default {
                 lastname: '',
                 email: '',
                 amount: null,
+                currency: 0
             },
             stripe: {
                 error: '',
@@ -95,6 +96,13 @@ export default {
                 delete this.errors.amount
             }
         },
+        'form.payment.currency'(value) {
+            if (value.length === 0) {
+                this.errors.currency = 1
+            } else {
+                delete this.errors.currency
+            }
+        }
     },
     props: ['csrf']
 }
