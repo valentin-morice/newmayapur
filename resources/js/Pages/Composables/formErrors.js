@@ -11,6 +11,7 @@ export default function useFormErrors() {
         second: {
             amount: '',
             payment_method: '',
+            currency: 0,
         },
         third: {
             address: '',

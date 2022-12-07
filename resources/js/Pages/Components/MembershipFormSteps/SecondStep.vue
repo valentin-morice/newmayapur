@@ -37,12 +37,19 @@ export default {
             }
         },
         'form.values.member.subscription.payment_method'(value) {
-            if (value.length === '') {
+            if (value.length === 0) {
                 this.errors.values.second.payment_method = 1;
             } else {
                 delete this.errors.values.second.payment_method
             }
         },
+        'form.values.member.subscription.currency'(value) {
+            if (value.length === 0) {
+                this.errors.values.second.currency = 1;
+            } else {
+                delete this.errors.values.second.currency
+            }
+        }
     }
 }
 </script>
