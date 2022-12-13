@@ -3176,6 +3176,9 @@ body[dir="rtl"] .checkbox:checked,
 .mt-2 {
   margin-top: 0.5rem;
 }
+.mt-40 {
+  margin-top: 10rem;
+}
 .block {
   display: block;
 }
@@ -3692,6 +3695,10 @@ body[dir="rtl"] .checkbox:checked,
   .md\:mx-0 {
     margin-left: 0px;
     margin-right: 0px;
+  }
+
+  .md\:mt-0 {
+    margin-top: 0px;
   }
 
   .md\:w-\[500px\] {

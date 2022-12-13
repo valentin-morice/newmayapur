@@ -7,7 +7,7 @@
                   class="text-white text-sm md:text-base px-4 py-2 font-bold rounded-[8px] bg-primary hover:cursor-pointer z-20">Single Donation</span>
         </div>
         <div class="lg:px-16 px-2 hero-content flex-col lg:flex-row-reverse">
-            <div class="text-center lg:text-left lg:ml-8">
+            <div class="mt-8 md:mt-0 text-center lg:text-left lg:ml-8">
                 <div v-if="form === 'member'">
                     <span
                         class="uppercase font-bold text-white shadow-md bg-secondary rounded-[6px] px-3 py-1.5 ml-0.5">Donate Monthly</span>
