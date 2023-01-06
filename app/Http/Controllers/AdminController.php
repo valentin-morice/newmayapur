@@ -214,17 +214,15 @@ class AdminController extends Controller
             $arr[] = [array_keys($groups)[$i] => array_sum($groups[array_keys($groups)[$i]])];
         }
 
-//        Monthly Limit Reached -- Uncomment next month
-//
-//        $converted = [];
-//
-//        foreach ($arr as $value) {
-//            $number = json_decode($this->client->get('/exchangerates_data/convert?to=eur&from=' . key($value) . '&amount=' . $value[key($value)])->getBody()->getContents(), true)['result'];
-//            $converted[] = number_format((float)$number, 2, '.', ',');
-//        }
+        $converted = [];
+
+        foreach ($arr as $value) {
+            $number = json_decode($this->client->get('/exchangerates_data/convert?to=eur&from=' . key($value) . '&amount=' . $value[key($value)])->getBody()->getContents(), true)['result'];
+            $converted[] = number_format((float)$number, 2, '.', ',');
+        }
 
         return [
-            'total' => /*array_sum($converted)*/ 'total',
+            'total' => array_sum($converted),
             'all' => $arr
         ];
     }
