@@ -222,7 +222,7 @@ class AdminController extends Controller
         }
 
         return [
-            'total' => array_sum($converted),
+            'total' => array_sum($converted) + \App\Models\Subscriptions::where('status', 'active')->where('currency', 'EUR')->sum('amount'),
             'all' => $arr
         ];
     }
